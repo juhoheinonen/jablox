@@ -172,6 +172,61 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 	current_block->direction = DIRECTION_DOWN;
 }
 
+int check_hit_down(game_tile game_grid[][40], block current_block)
+{
+	// get all occupied xy positions
+	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
+
+	// check if the block is not at the bottom wall
+	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39)
+	{
+		// check if the block is not colliding with another block
+		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y) &&
+			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y) &&
+			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y) &&
+			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y))
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+void mark_block_as_landed(block *current_block)
+{
+	switch (current_block->block_type)
+	{
+	case I_BLOCK:
+		current_block->block_type = I_BLOCK_FALLEN;
+		break;
+	case J_BLOCK:
+		current_block->block_type = J_BLOCK_FALLEN;
+		break;
+	case L_BLOCK:
+		current_block->block_type = L_BLOCK_FALLEN;
+		break;
+	case O_BLOCK:
+		current_block->block_type = O_BLOCK_FALLEN;
+		break;
+	case S_BLOCK:
+		current_block->block_type = S_BLOCK_FALLEN;
+		break;
+	case T_BLOCK:
+		current_block->block_type = T_BLOCK_FALLEN;
+		break;
+	case Z_BLOCK:
+		current_block->block_type = Z_BLOCK_FALLEN;
+		break;
+	}
+}
+
 void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in_tiles, game_tile game_grid[12][40], const int horizontal_offset, const int tile_width, const int vertical_offset, const int tile_height)
 {
 	for (int x = 0; x < game_grid_width_in_tiles; x++)
@@ -265,9 +320,20 @@ int main(void)
 		{
 			seconds_elapsed_for_move_down = 0.0;
 			move_block_down(game_grid, &current_block);
+
+			int hit_down = check_hit_down(game_grid, current_block);
+			if (hit_down) {
+				mark_block_as_landed(&current_block);
+				initialize_new_block(&current_block);
+			}
 			update_block_to_grid(game_grid, current_block);
-			// perhaps run function to check game grid status: row full, block landed, etc.
-			// check_events(game_grid, game_grid_width_in_tiles, game_grid_height_in_tiles);
+			// todo, many things:
+			// --> check if block has landed
+			// --> check if game over
+			// --> check if row is full
+			
+			// mark block as landed			
+			
 		}		
 
 		ClearBackground(RAYWHITE);

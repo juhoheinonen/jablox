@@ -56,7 +56,7 @@ typedef enum
 typedef struct
 {
     // these point to left bottom corner of the block in its original format
-    xy_position xy_position;
+    xy_position current_xy_position;
     tile_block_type block_type;
     rotation rotation;
     direction direction;
