@@ -8,7 +8,7 @@
 // Global variables
 game_status status = RUNNING;
 const double move_horizontal_or_rotate_seconds = 0.1;
-const double move_down_seconds = 1;
+const double move_down_seconds = 1.0;
 
 int getRandomInt(int min, int max)
 {
@@ -81,9 +81,13 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 			{
 				// store previous occupied xy positions
 				previous_positions->xy1.x = positions->xy1.x;
+				previous_positions->xy1.y = positions->xy1.y;
 				previous_positions->xy2.x = positions->xy2.x;
+				previous_positions->xy2.y = positions->xy2.y;
 				previous_positions->xy3.x = positions->xy3.x;
+				previous_positions->xy3.y = positions->xy3.y;
 				previous_positions->xy4.x = positions->xy4.x;
+				previous_positions->xy4.y = positions->xy4.y;
 
 				current_block->xy_position.x--;
 
@@ -108,9 +112,13 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 			{
 				// store previous occupied xy positions
 				previous_positions->xy1.x = positions->xy1.x;
+				previous_positions->xy1.y = positions->xy1.y;
 				previous_positions->xy2.x = positions->xy2.x;
+				previous_positions->xy2.y = positions->xy2.y;
 				previous_positions->xy3.x = positions->xy3.x;
+				previous_positions->xy3.y = positions->xy3.y;
 				previous_positions->xy4.x = positions->xy4.x;
+				previous_positions->xy4.y = positions->xy4.y;
 
 				current_block->xy_position.x++;
 
@@ -132,12 +140,6 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 	occupied_xy_positions *positions = &current_block->occupied_xy_positions;
 	occupied_xy_positions *previous_positions = &current_block->previous_occupied_xy_positions;
 
-	if (positions->xy1.y > 19)
-	{
-		// debugging
-		return;
-	}
-
 	// check if the block is not at the bottom wall
 	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39)
 	{
@@ -148,9 +150,13 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y))
 		{
 			// store previous occupied xy positions
+			previous_positions->xy1.x = positions->xy1.x;
 			previous_positions->xy1.y = positions->xy1.y;
+			previous_positions->xy2.x = positions->xy2.x;
 			previous_positions->xy2.y = positions->xy2.y;
+			previous_positions->xy3.x = positions->xy3.x;
 			previous_positions->xy3.y = positions->xy3.y;
+			previous_positions->xy4.x = positions->xy4.x;
 			previous_positions->xy4.y = positions->xy4.y;
 
 			current_block->xy_position.y++;
@@ -227,6 +233,8 @@ int main(void)
 
 	while (!WindowShouldClose())
 	{
+		BeginDrawing();
+
 		// Listen for direction keys
 		if (IsKeyPressed(KEY_LEFT))
 		{			
@@ -241,7 +249,8 @@ int main(void)
 
 		// Update the game state based on the elapsed time
 		seconds_elapsed_for_move_down += GetFrameTime();
-		seconds_elapsed_for_move_horizontal_or_rotate += GetFrameTime();
+		//TraceLog(LOG_INFO, "Seconds elapsed for move down: %f", seconds_elapsed_for_move_down);
+		seconds_elapsed_for_move_horizontal_or_rotate += seconds_elapsed_for_move_down;
 
 		if (seconds_elapsed_for_move_horizontal_or_rotate > move_horizontal_or_rotate_seconds)
 		{
@@ -252,16 +261,14 @@ int main(void)
 				update_block_to_grid(game_grid, current_block);
 			}
 		}
-		else if (seconds_elapsed_for_move_down > move_down_seconds)
+		if (seconds_elapsed_for_move_down > move_down_seconds)
 		{
-			// seconds_elapsed_for_move_down = 0.0;
-			// move_block_down(game_grid, &current_block);
-			// update_block_to_grid(game_grid, current_block);
+			seconds_elapsed_for_move_down = 0.0;
+			move_block_down(game_grid, &current_block);
+			update_block_to_grid(game_grid, current_block);
 			// perhaps run function to check game grid status: row full, block landed, etc.
 			// check_events(game_grid, game_grid_width_in_tiles, game_grid_height_in_tiles);
-		}
-
-		BeginDrawing();
+		}		
 
 		ClearBackground(RAYWHITE);
 
