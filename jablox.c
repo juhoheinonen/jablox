@@ -8,7 +8,7 @@
 // Global variables
 game_status status = RUNNING;
 const double move_horizontal_or_rotate_seconds = 0.1;
-const double move_down_seconds = 1.0;
+const double move_down_seconds = 0.5;
 
 int getRandomInt(int min, int max)
 {
@@ -89,7 +89,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
 
-				current_block->xy_position.x--;
+				current_block->current_xy_position.x--;
 
 				// move all occupied xy positions
 				positions->xy1.x--;
@@ -120,7 +120,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
 
-				current_block->xy_position.x++;
+				current_block->current_xy_position.x++;
 
 				// move all occupied xy positions
 				positions->xy1.x++;
@@ -159,7 +159,7 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			previous_positions->xy4.x = positions->xy4.x;
 			previous_positions->xy4.y = positions->xy4.y;
 
-			current_block->xy_position.y++;
+			current_block->current_xy_position.y++;
 
 			// move all occupied xy positions
 			positions->xy1.y++;
@@ -226,6 +226,8 @@ void mark_block_as_landed(block *current_block)
 		break;
 	}
 }
+
+//void initialize_new_block()
 
 void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in_tiles, game_tile game_grid[12][40], const int horizontal_offset, const int tile_width, const int vertical_offset, const int tile_height)
 {
@@ -325,7 +327,7 @@ int main(void)
 			int hit_down = check_hit_down(game_grid, current_block);
 			if (hit_down) {
 				mark_block_as_landed(&current_block);
-				initialize_new_block(&current_block);
+				//initialize_new_block(&current_block);
 			}
 			update_block_to_grid(game_grid, current_block);
 			// todo, many things:
