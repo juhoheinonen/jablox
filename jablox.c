@@ -242,6 +242,7 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, BROWN);
 				break;
 			case I_BLOCK:
+			case I_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, BLUE);
 				break;
 			}
@@ -330,10 +331,7 @@ int main(void)
 			// todo, many things:
 			// --> check if block has landed
 			// --> check if game over
-			// --> check if row is full
-			
-			// mark block as landed			
-			
+			// --> check if row is full									
 		}		
 
 		ClearBackground(RAYWHITE);

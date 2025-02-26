@@ -13,8 +13,17 @@ typedef enum
     O_BLOCK,
     S_BLOCK,
     T_BLOCK,
-    Z_BLOCK    
+    Z_BLOCK,
+    I_BLOCK_FALLEN,
+    J_BLOCK_FALLEN,
+    L_BLOCK_FALLEN,
+    O_BLOCK_FALLEN,
+    S_BLOCK_FALLEN,
+    T_BLOCK_FALLEN,
+    Z_BLOCK_FALLEN        
 } tile_block_type;
+
+
 
 typedef struct
 {
