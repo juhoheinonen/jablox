@@ -243,12 +243,30 @@ block initialize_new_block()
 	return current_block;
 }
 
-int can_rotate(game_tile game_grid[][40], block current_block) {
+// todo: finish this later
+int can_rotate(game_tile game_grid[][40], block current_block)
+{
 	// get all occupied xy positions
 	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
 
+	occupied_xy_positions new_positions;
+
 	rotation current_rotation = current_block.rotation;
 	rotation new_rotation = (current_rotation + 1) % 4;
+
+	return 1;
+
+	switch (current_block.block_type)
+	{
+	case I_BLOCK:
+		if (current_rotation == RIGHT) {
+			// rotate down
+		}
+		break;
+
+	default:
+		break;
+	}
 
 	// // check if the block is not at the bottom wall
 	// if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39)
@@ -270,6 +288,17 @@ int can_rotate(game_tile game_grid[][40], block current_block) {
 	// {
 	// 	return 0;
 	// }
+}
+
+// very fast solution to hack something
+void rotate_block(game_tile game_grid[][40], block *current_block) {
+	if (current_block->block_type == I_BLOCK) {
+		if (current_block->rotation == RIGHT || current_block->rotation == LEFT) {
+			current_block->rotation == DOWN;
+		} else if (current_block->rotation == DOWN || current_block->rotation == UP) {
+			current_block->rotation == RIGHT;
+		}
+	}
 }
 
 void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in_tiles, game_tile game_grid[12][40], const int horizontal_offset, const int tile_width, const int vertical_offset, const int tile_height)
