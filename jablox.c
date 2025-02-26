@@ -50,7 +50,7 @@ void initialize_game_grid(game_tile game_grid[][40], int width, int height)
 void update_block_to_grid(game_tile game_grid[][40], block current_block)
 {
 	// clear previous occupied xy positions
-	game_grid[current_block.previous_occupied_xy_positions.xy1.x][current_block.previous_occupied_xy_positions.xy1.y].type = EMPTY;	
+	game_grid[current_block.previous_occupied_xy_positions.xy1.x][current_block.previous_occupied_xy_positions.xy1.y].type = EMPTY;
 	game_grid[current_block.previous_occupied_xy_positions.xy2.x][current_block.previous_occupied_xy_positions.xy2.y].type = EMPTY;
 	game_grid[current_block.previous_occupied_xy_positions.xy3.x][current_block.previous_occupied_xy_positions.xy3.y].type = EMPTY;
 	game_grid[current_block.previous_occupied_xy_positions.xy4.x][current_block.previous_occupied_xy_positions.xy4.y].type = EMPTY;
@@ -227,7 +227,19 @@ void mark_block_as_landed(block *current_block)
 	}
 }
 
-//void initialize_new_block()
+// todo: thing about initial position etc.
+block initialize_new_block()
+{
+	// tile_block_type current_block_type = getRandomBlockType();
+	//  initially hard-coded to I_BLOCK for development
+	tile_block_type current_block_type = I_BLOCK;
+	occupied_xy_positions occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
+	occupied_xy_positions previous_occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
+
+	block current_block = {{2, 20}, current_block_type, RIGHT, DIRECTION_DOWN, occupied_positions, previous_occupied_positions};
+
+	return current_block;
+}
 
 void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in_tiles, game_tile game_grid[12][40], const int horizontal_offset, const int tile_width, const int vertical_offset, const int tile_height)
 {
@@ -283,7 +295,7 @@ int main(void)
 	// tile_block_type current_block_type = getRandomBlockType();
 	//  initially hard-coded to I_BLOCK for development
 	tile_block_type current_block_type = I_BLOCK;
-	occupied_xy_positions occupied_positions =  {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
+	occupied_xy_positions occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
 	occupied_xy_positions previous_occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
 
 	block current_block = {{2, 20}, current_block_type, RIGHT, DIRECTION_DOWN, occupied_positions, previous_occupied_positions};
@@ -295,19 +307,19 @@ int main(void)
 
 		// Listen for direction keys
 		if (IsKeyPressed(KEY_LEFT))
-		{			
+		{
 			current_block.direction = DIRECTION_LEFT;
 			TraceLog(LOG_INFO, "Left");
 		}
 		if (IsKeyPressed(KEY_RIGHT))
-		{		
+		{
 			current_block.direction = DIRECTION_RIGHT;
 		}
 		// if block also for rotation
 
 		// Update the game state based on the elapsed time
 		seconds_elapsed_for_move_down += GetFrameTime();
-		//TraceLog(LOG_INFO, "Seconds elapsed for move down: %f", seconds_elapsed_for_move_down);
+		// TraceLog(LOG_INFO, "Seconds elapsed for move down: %f", seconds_elapsed_for_move_down);
 		seconds_elapsed_for_move_horizontal_or_rotate += seconds_elapsed_for_move_down;
 
 		if (seconds_elapsed_for_move_horizontal_or_rotate > move_horizontal_or_rotate_seconds)
@@ -325,16 +337,22 @@ int main(void)
 			move_block_down(game_grid, &current_block);
 
 			int hit_down = check_hit_down(game_grid, current_block);
-			if (hit_down) {
+			if (hit_down)
+			{
 				mark_block_as_landed(&current_block);
-				//initialize_new_block(&current_block);
+				update_block_to_grid(game_grid, current_block);
+				current_block = initialize_new_block();
 			}
-			update_block_to_grid(game_grid, current_block);
+			else
+			{
+				update_block_to_grid(game_grid, current_block);
+			}
+
 			// todo, many things:
 			// --> check if block has landed
 			// --> check if game over
-			// --> check if row is full									
-		}		
+			// --> check if row is full
+		}
 
 		ClearBackground(RAYWHITE);
 
