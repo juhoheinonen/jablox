@@ -71,6 +71,7 @@ typedef struct
     direction direction;
     occupied_xy_positions occupied_xy_positions;
     occupied_xy_positions previous_occupied_xy_positions;
+    int fast_drop;
 } block;
 
 // enum for game status, like running, game over and win
