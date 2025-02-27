@@ -199,6 +199,18 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy3.y = position->y + 2;
 				positions->xy4.x = position->x;
 				positions->xy4.y = position->y + 3;
+				current_block->rotation = DOWN;
+			} else if (current_block->rotation == DOWN) {
+				// turn left
+				positions->xy1.x = position->x;
+				positions->xy1.y = position->y;
+				positions->xy2.x = position->x-1;
+				positions->xy2.y = position->y;
+				positions->xy3.x = position->x-2;
+				positions->xy3.y = position->y;
+				positions->xy4.x = position->x-3;
+				positions->xy4.y = position->y;
+				current_block->rotation = LEFT;
 			}
 		}
 		break;
