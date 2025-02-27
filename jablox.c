@@ -603,10 +603,8 @@ int main(void)
 				game_score += mark_whole_rows(game_grid);
 			}
 
-			// todo, many things:
-			// --> check if block has landed
-			// --> check if game over
-			// --> check if row is full
+			// todo, many things:			
+			// --> check if game over, either at upper border or score full			
 		}
 
 		ClearBackground(RAYWHITE);
