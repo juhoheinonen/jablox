@@ -8,11 +8,11 @@
 // Global variables
 game_status status = RUNNING;
 const double move_horizontal_or_rotate_seconds = 0.05;
-const double move_down_seconds = 0.5;
+const double move_down_seconds = 0.3;
 const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
 const int game_grid_height_in_tiles = 40;
 int game_score = 0;
-const int level_1_score_goal = 10;
+const int level_1_score_goal = 1;
 
 int getRandomInt(int min, int max)
 {
@@ -172,13 +172,9 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 		break;
 
 	case DIRECTION_ROTATE:
-		// todo: check if rotation is possible
 		// rotate_block(game_grid, current_block);
 		xy_position *position = &current_block->current_xy_position;
-
-		// occupied_xy_positions *positions = &current_block->previous_occupied_xy_positions;
-		// occupied_xy_positions *previous_positions = &current_block->previous_occupied_xy_positions;
-
+		
 		// store previous occupied xy positions
 		previous_positions->xy1.x = positions->xy1.x;
 		previous_positions->xy1.y = positions->xy1.y;
@@ -362,52 +358,72 @@ block initialize_new_block()
 // todo: finish this later
 int can_rotate(game_tile game_grid[][40], block current_block)
 {
-	// todo: finish the implementation
-	return 1;
-
-	// get all occupied xy positions
 	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
-
 	occupied_xy_positions new_positions;
-
 	rotation current_rotation = current_block.rotation;
-	rotation new_rotation = (current_rotation + 1) % 4;
-
-	return 1;
 
 	switch (current_block.block_type)
 	{
 	case I_BLOCK:
 		if (current_rotation == RIGHT)
 		{
-			// rotate down
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x;
+			new_positions.xy2.y = positions->xy1.y + 1;
+			new_positions.xy3.x = positions->xy1.x;
+			new_positions.xy3.y = positions->xy1.y + 2;
+			new_positions.xy4.x = positions->xy1.x;
+			new_positions.xy4.y = positions->xy1.y + 3;
+		}
+		else if (current_rotation == DOWN)
+		{
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x - 1;
+			new_positions.xy2.y = positions->xy1.y;
+			new_positions.xy3.x = positions->xy1.x - 2;
+			new_positions.xy3.y = positions->xy1.y;
+			new_positions.xy4.x = positions->xy1.x - 3;
+			new_positions.xy4.y = positions->xy1.y;
+		}
+		else if (current_rotation == LEFT)
+		{
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x;
+			new_positions.xy2.y = positions->xy1.y - 1;
+			new_positions.xy3.x = positions->xy1.x;
+			new_positions.xy3.y = positions->xy1.y - 2;
+			new_positions.xy4.x = positions->xy1.x;
+			new_positions.xy4.y = positions->xy1.y - 3;
+		}
+		else if (current_rotation == UP)
+		{
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x + 1;
+			new_positions.xy2.y = positions->xy1.y;
+			new_positions.xy3.x = positions->xy1.x + 2;
+			new_positions.xy3.y = positions->xy1.y;
+			new_positions.xy4.x = positions->xy1.x + 3;
+			new_positions.xy4.y = positions->xy1.y;
 		}
 		break;
-
 	default:
-		break;
+		return 0;
 	}
 
-	// // check if the block is not at the bottom wall
-	// if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39)
-	// {
-	// 	// check if the block is not colliding with another block
-	// 	if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y) &&
-	// 		(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y) &&
-	// 		(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y) &&
-	// 		(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y))
-	// 	{
-	// 		return 1;
-	// 	}
-	// 	else
-	// 	{
-	// 		return 0;
-	// 	}
-	// }
-	// else
-	// {
-	// 	return 0;
-	// }
+	// Check if the new positions are valid (not colliding with walls or other blocks)
+	if (game_grid[new_positions.xy1.x][new_positions.xy1.y].type == EMPTY || game_grid[new_positions.xy1.x][new_positions.xy1.y].type == current_block.block_type &&
+		game_grid[new_positions.xy2.x][new_positions.xy2.y].type == EMPTY || game_grid[new_positions.xy2.x][new_positions.xy2.y].type == current_block.block_type &&
+		game_grid[new_positions.xy3.x][new_positions.xy3.y].type == EMPTY || game_grid[new_positions.xy3.x][new_positions.xy3.y].type == current_block.block_type &&
+		game_grid[new_positions.xy4.x][new_positions.xy4.y].type == EMPTY || game_grid[new_positions.xy4.x][new_positions.xy4.y].type == current_block.block_type)
+	{
+		return 1;
+	}
+
+	return 0;
 }
 
 int mark_whole_rows(game_tile game_grid[][40])
@@ -519,8 +535,18 @@ int main(void)
 	update_game_grid(game_grid, current_block);
 
 	while (!WindowShouldClose())
-	{
-		BeginDrawing();
+	{		
+		if (status == WIN)
+		{
+			while (!IsKeyDown(KEY_ENTER) && !IsKeyDown(KEY_ESCAPE) && !WindowShouldClose())
+			{
+				BeginDrawing();
+				ClearBackground(RAYWHITE);
+				DrawText(TextFormat("Yes, you finished Jablox!!!"), screenWidth / 2, 400, 50, BLACK);
+				EndDrawing();
+			}
+			break;
+		}
 
 		// Listen for direction keys
 		if (IsKeyPressed(KEY_LEFT))
@@ -601,11 +627,18 @@ int main(void)
 			if (hit_down)
 			{
 				game_score += mark_whole_rows(game_grid);
+
+				if (game_score >= level_1_score_goal)
+				{
+					status = WIN;
+				}
 			}
 
-			// todo, many things:			
-			// --> check if game over, either at upper border or score full			
+			// todo, many things:
+			// --> check if game over, either at upper border or score full
 		}
+
+		BeginDrawing();
 
 		ClearBackground(RAYWHITE);
 
