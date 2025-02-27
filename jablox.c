@@ -9,6 +9,8 @@
 game_status status = RUNNING;
 const double move_horizontal_or_rotate_seconds = 0.1;
 const double move_down_seconds = 0.5;
+const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
+const int game_grid_height_in_tiles = 40;
 
 int getRandomInt(int min, int max)
 {
@@ -47,7 +49,7 @@ void initialize_game_grid(game_tile game_grid[][40], int width, int height)
 	}
 }
 
-void update_block_to_grid(game_tile game_grid[][40], block current_block)
+void update_game_grid(game_tile game_grid[][40], block current_block)
 {
 	// clear previous occupied xy positions
 	game_grid[current_block.previous_occupied_xy_positions.xy1.x][current_block.previous_occupied_xy_positions.xy1.y].type = EMPTY;
@@ -406,7 +408,21 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 	// }
 }
 
-void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in_tiles, game_tile game_grid[12][40], const int horizontal_offset, const int tile_width, const int vertical_offset, const int tile_height)
+int mark_whole_rows(game_tile game_grid[][40])
+{
+	int whole_rows = 0;
+
+	// todo only do this until starting position. Skip walls
+	for (size_t y = game_grid_height_in_tiles - 1; y > 0; y--) {
+		int whole_row_found = 0;
+		for (size_t x = game_grid_width_in_tiles - 1; x > 0; x--) {
+			game_tile tile = game_grid[x][y];
+			if (tile.type >= I_BLOCK_FALLEN && tile.type <= Z_BLOCK_FALLEN)
+		}
+	}
+}
+
+void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in_tiles, game_tile game_grid[][40], const int horizontal_offset, const int tile_width, const int vertical_offset, const int tile_height)
 {
 	for (int x = 0; x < game_grid_width_in_tiles; x++)
 	{
@@ -436,9 +452,6 @@ int main(void)
 	const int screenWidth = 2048;	  // 1024;
 	const int screenHeight = 768 * 3; // 1536; // 768;
 
-	const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
-	const int game_grid_height_in_tiles = 40;
-
 	const int horizontal_offset = (screenWidth / 2) / 2;
 	const int vertical_offset = 150;
 
@@ -467,7 +480,7 @@ int main(void)
 
 	block current_block = initialize_new_block();
 
-	update_block_to_grid(game_grid, current_block);
+	update_game_grid(game_grid, current_block);
 
 	while (!WindowShouldClose())
 	{
@@ -508,7 +521,7 @@ int main(void)
 			if (current_block.direction == DIRECTION_LEFT || current_block.direction == DIRECTION_RIGHT || current_block.direction == DIRECTION_ROTATE)
 			{
 				move_block_horizontal_or_rotate(game_grid, &current_block);
-				update_block_to_grid(game_grid, current_block);
+				update_game_grid(game_grid, current_block);
 			}
 		}
 		if (seconds_elapsed_for_move_down > move_down_seconds || current_block.fast_drop)
@@ -524,7 +537,7 @@ int main(void)
 				{
 					move_block_down(game_grid, &current_block);
 					hit_down = check_hit_down(game_grid, current_block);
-					update_block_to_grid(game_grid, current_block);
+					update_game_grid(game_grid, current_block);
 				}
 				current_block = initialize_new_block();
 			}
@@ -536,13 +549,19 @@ int main(void)
 				if (hit_down)
 				{
 					mark_block_as_landed(&current_block);
-					update_block_to_grid(game_grid, current_block);
+					update_game_grid(game_grid, current_block);
 					current_block = initialize_new_block();
 				}
 				else
 				{
-					update_block_to_grid(game_grid, current_block);
+					update_game_grid(game_grid, current_block);
 				}
+			}
+
+			if (hit_down)
+			{
+				// todo: check if there are whole rows
+				int whole_rows_count = mark_whole_rows(game_grid);
 			}
 
 			// todo, many things:
