@@ -200,17 +200,45 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.x = position->x;
 				positions->xy4.y = position->y + 3;
 				current_block->rotation = DOWN;
-			} else if (current_block->rotation == DOWN) {
+			}
+			else if (current_block->rotation == DOWN)
+			{
 				// turn left
 				positions->xy1.x = position->x;
 				positions->xy1.y = position->y;
-				positions->xy2.x = position->x-1;
+				positions->xy2.x = position->x - 1;
 				positions->xy2.y = position->y;
-				positions->xy3.x = position->x-2;
+				positions->xy3.x = position->x - 2;
 				positions->xy3.y = position->y;
-				positions->xy4.x = position->x-3;
+				positions->xy4.x = position->x - 3;
 				positions->xy4.y = position->y;
 				current_block->rotation = LEFT;
+			}
+			else if (current_block->rotation == LEFT)
+			{
+				// turn up
+				positions->xy1.x = position->x;
+				positions->xy1.y = position->y;
+				positions->xy2.x = position->x;
+				positions->xy2.y = position->y - 1;
+				positions->xy3.x = position->x;
+				positions->xy3.y = position->y - 2;
+				positions->xy4.x = position->x;
+				positions->xy4.y = position->y - 3;
+				current_block->rotation = UP;
+			}
+			else if (current_block->rotation == UP)
+			{
+				// turn right
+				positions->xy1.x = position->x;
+				positions->xy1.y = position->y;
+				positions->xy2.x = position->x + 1;
+				positions->xy2.y = position->y;
+				positions->xy3.x = position->x + 2;
+				positions->xy3.y = position->y;
+				positions->xy4.x = position->x + 3;
+				positions->xy4.y = position->y;
+				current_block->rotation = RIGHT;
 			}
 		}
 		break;
@@ -486,19 +514,35 @@ int main(void)
 		if (seconds_elapsed_for_move_down > move_down_seconds || current_block.fast_drop)
 		{
 			seconds_elapsed_for_move_down = 0.0;
-			current_block.fast_drop = 0;
-			move_block_down(game_grid, &current_block);
+			// current_block.fast_drop = 0;
 
-			int hit_down = check_hit_down(game_grid, current_block);
-			if (hit_down)
+			int hit_down = 0;
+
+			if (current_block.fast_drop)
 			{
-				mark_block_as_landed(&current_block);
-				update_block_to_grid(game_grid, current_block);
+				while (hit_down == 0)
+				{
+					move_block_down(game_grid, &current_block);
+					hit_down = check_hit_down(game_grid, current_block);
+					update_block_to_grid(game_grid, current_block);
+				}
 				current_block = initialize_new_block();
 			}
 			else
 			{
-				update_block_to_grid(game_grid, current_block);
+				move_block_down(game_grid, &current_block);
+
+				hit_down = check_hit_down(game_grid, current_block);
+				if (hit_down)
+				{
+					mark_block_as_landed(&current_block);
+					update_block_to_grid(game_grid, current_block);
+					current_block = initialize_new_block();
+				}
+				else
+				{
+					update_block_to_grid(game_grid, current_block);
+				}
 			}
 
 			// todo, many things:
