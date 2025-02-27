@@ -7,7 +7,7 @@
 
 // Global variables
 game_status status = RUNNING;
-const double move_horizontal_or_rotate_seconds = 0.1;
+const double move_horizontal_or_rotate_seconds = 0.05;
 const double move_down_seconds = 0.5;
 const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
 const int game_grid_height_in_tiles = 40;
@@ -410,15 +410,34 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 
 int mark_whole_rows(game_tile game_grid[][40])
 {
-	int whole_rows = 0;
+	int whole_rows = 0;	
 
 	// todo only do this until starting position. Skip walls
-	for (size_t y = game_grid_height_in_tiles - 1; y > 0; y--) {
+	for (size_t y = game_grid_height_in_tiles - 2; y > 0; y--) {
 		int whole_row_found = 0;
-		for (size_t x = game_grid_width_in_tiles - 1; x > 0; x--) {
+		for (size_t x = game_grid_width_in_tiles - 2; x > 0; x--) {
 			game_tile tile = game_grid[x][y];
-			if (tile.type >= I_BLOCK_FALLEN && tile.type <= Z_BLOCK_FALLEN)
-		}
+			if (tile.type < I_BLOCK_FALLEN || tile.type > Z_BLOCK_FALLEN) {
+				// not full row
+				break;
+			}
+			if (x == 1) {
+				whole_row_found = 1;
+				whole_rows++;
+				// clear the row
+				for (size_t x1 = 1; x1 < game_grid_width_in_tiles - 1; x1++) {
+					game_grid[x1][y].type = EMPTY;					
+				}
+				// move other rows down
+				for (size_t y1 = y-1; y1 > 0; y1--) {
+					for (size_t x2 = game_grid_width_in_tiles - 2; x2 > 0; x2--) {
+						tile = game_grid[x2][y1];
+						// assign the tile's type to lower row
+						game_grid[x2][y1+1].type = tile.type;						
+					}
+				}
+			}
+		}		
 	}
 }
 
@@ -496,7 +515,7 @@ int main(void)
 		{
 			current_block.direction = DIRECTION_RIGHT;
 		}
-		if (IsKeyPressed(KEY_DOWN))
+		if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_SPACE))
 		{
 			current_block.direction = DIRECTION_DOWN;
 			current_block.fast_drop = 1;
@@ -537,6 +556,9 @@ int main(void)
 				{
 					move_block_down(game_grid, &current_block);
 					hit_down = check_hit_down(game_grid, current_block);
+					if (hit_down) {
+						mark_block_as_landed(&current_block);						
+					}
 					update_game_grid(game_grid, current_block);
 				}
 				current_block = initialize_new_block();
