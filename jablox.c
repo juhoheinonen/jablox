@@ -426,18 +426,22 @@ int mark_whole_rows(game_tile game_grid[][40])
 				whole_rows++;
 				// clear the row
 				for (size_t x1 = 1; x1 < game_grid_width_in_tiles - 1; x1++) {
-					game_grid[x1][y].type = EMPTY;					
+					game_grid[x1][y].type = EMPTY;
 				}
 				// move other rows down
 				for (size_t y1 = y-1; y1 > 0; y1--) {
 					for (size_t x2 = game_grid_width_in_tiles - 2; x2 > 0; x2--) {
 						tile = game_grid[x2][y1];
 						// assign the tile's type to lower row
-						game_grid[x2][y1+1].type = tile.type;						
+						game_grid[x2][y1+1].type = tile.type;
 					}
 				}
 			}
 		}		
+	}
+
+	if (whole_rows > 0) {
+		whole_rows += mark_whole_rows(game_grid);
 	}
 }
 
