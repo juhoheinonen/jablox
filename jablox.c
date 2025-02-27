@@ -415,10 +415,14 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 	}
 
 	// Check if the new positions are valid (not colliding with walls or other blocks)
-	if (game_grid[new_positions.xy1.x][new_positions.xy1.y].type == EMPTY || game_grid[new_positions.xy1.x][new_positions.xy1.y].type == current_block.block_type &&
-		game_grid[new_positions.xy2.x][new_positions.xy2.y].type == EMPTY || game_grid[new_positions.xy2.x][new_positions.xy2.y].type == current_block.block_type &&
-		game_grid[new_positions.xy3.x][new_positions.xy3.y].type == EMPTY || game_grid[new_positions.xy3.x][new_positions.xy3.y].type == current_block.block_type &&
-		game_grid[new_positions.xy4.x][new_positions.xy4.y].type == EMPTY || game_grid[new_positions.xy4.x][new_positions.xy4.y].type == current_block.block_type)
+	if (new_positions.xy1.x > 0 && new_positions.xy1.x < game_grid_width_in_tiles - 1 &&
+		new_positions.xy2.x > 0 && new_positions.xy2.x < game_grid_width_in_tiles - 1 &&
+		new_positions.xy3.x > 0 && new_positions.xy3.x < game_grid_width_in_tiles - 1 &&
+		new_positions.xy4.x > 0 && new_positions.xy4.x < game_grid_width_in_tiles - 1 &&
+		(game_grid[new_positions.xy1.x][new_positions.xy1.y].type == EMPTY || game_grid[new_positions.xy1.x][new_positions.xy1.y].type == current_block.block_type) &&
+		(game_grid[new_positions.xy2.x][new_positions.xy2.y].type == EMPTY || game_grid[new_positions.xy2.x][new_positions.xy2.y].type == current_block.block_type) &&
+		(game_grid[new_positions.xy3.x][new_positions.xy3.y].type == EMPTY || game_grid[new_positions.xy3.x][new_positions.xy3.y].type == current_block.block_type) &&
+		(game_grid[new_positions.xy4.x][new_positions.xy4.y].type == EMPTY || game_grid[new_positions.xy4.x][new_positions.xy4.y].type == current_block.block_type))
 	{
 		return 1;
 	}
