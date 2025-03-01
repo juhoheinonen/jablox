@@ -23,7 +23,8 @@ tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
+	// int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
+	int randomIndex = getRandomInt(I_BLOCK, I_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -133,7 +134,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
 
-				current_block->current_xy_position.x--;
+				//current_block->current_xy_position.x--;
 
 				// move all occupied xy positions
 				positions->xy1.x--;
@@ -164,7 +165,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
 
-				current_block->current_xy_position.x++;
+				//current_block->current_xy_position.x++;
 
 				// move all occupied xy positions
 				positions->xy1.x++;
@@ -177,7 +178,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 
 	case DIRECTION_ROTATE:
 		// rotate_block(game_grid, current_block);
-		xy_position *position = &current_block->current_xy_position;
+		//xy_position *position = &current_block->current_xy_position;
 
 		// store previous occupied xy positions
 		previous_positions->xy1.x = positions->xy1.x;
@@ -189,59 +190,61 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 		previous_positions->xy4.x = positions->xy4.x;
 		previous_positions->xy4.y = positions->xy4.y;
 
+		xy_position position = {positions->xy1.x, positions->xy1.y};
+
 		// check current rotation and calculate next position based on it. TODO: generalize this to other blocks
 		if (current_block->block_type == I_BLOCK)
 		{
 			if (current_block->rotation == RIGHT)
 			{
 				// turn down
-				positions->xy1.x = position->x;
-				positions->xy1.y = position->y;
-				positions->xy2.x = position->x;
-				positions->xy2.y = position->y + 1;
-				positions->xy3.x = position->x;
-				positions->xy3.y = position->y + 2;
-				positions->xy4.x = position->x;
-				positions->xy4.y = position->y + 3;
+				positions->xy1.x = position.x;
+				positions->xy1.y = position.y;
+				positions->xy2.x = position.x;
+				positions->xy2.y = position.y + 1;
+				positions->xy3.x = position.x;
+				positions->xy3.y = position.y + 2;
+				positions->xy4.x = position.x;
+				positions->xy4.y = position.y + 3;
 				current_block->rotation = DOWN;
 			}
 			else if (current_block->rotation == DOWN)
 			{
 				// turn left
-				positions->xy1.x = position->x;
-				positions->xy1.y = position->y;
-				positions->xy2.x = position->x - 1;
-				positions->xy2.y = position->y;
-				positions->xy3.x = position->x - 2;
-				positions->xy3.y = position->y;
-				positions->xy4.x = position->x - 3;
-				positions->xy4.y = position->y;
+				positions->xy1.x = position.x;
+				positions->xy1.y = position.y;
+				positions->xy2.x = position.x - 1;
+				positions->xy2.y = position.y;
+				positions->xy3.x = position.x - 2;
+				positions->xy3.y = position.y;
+				positions->xy4.x = position.x - 3;
+				positions->xy4.y = position.y;
 				current_block->rotation = LEFT;
 			}
 			else if (current_block->rotation == LEFT)
 			{
 				// turn up
-				positions->xy1.x = position->x;
-				positions->xy1.y = position->y;
-				positions->xy2.x = position->x;
-				positions->xy2.y = position->y - 1;
-				positions->xy3.x = position->x;
-				positions->xy3.y = position->y - 2;
-				positions->xy4.x = position->x;
-				positions->xy4.y = position->y - 3;
+				positions->xy1.x = position.x;
+				positions->xy1.y = position.y;
+				positions->xy2.x = position.x;
+				positions->xy2.y = position.y - 1;
+				positions->xy3.x = position.x;
+				positions->xy3.y = position.y - 2;
+				positions->xy4.x = position.x;
+				positions->xy4.y = position.y - 3;
 				current_block->rotation = UP;
 			}
 			else if (current_block->rotation == UP)
 			{
 				// turn right
-				positions->xy1.x = position->x;
-				positions->xy1.y = position->y;
-				positions->xy2.x = position->x + 1;
-				positions->xy2.y = position->y;
-				positions->xy3.x = position->x + 2;
-				positions->xy3.y = position->y;
-				positions->xy4.x = position->x + 3;
-				positions->xy4.y = position->y;
+				positions->xy1.x = position.x;
+				positions->xy1.y = position.y;
+				positions->xy2.x = position.x + 1;
+				positions->xy2.y = position.y;
+				positions->xy3.x = position.x + 2;
+				positions->xy3.y = position.y;
+				positions->xy4.x = position.x + 3;
+				positions->xy4.y = position.y;
 				current_block->rotation = RIGHT;
 			}
 		}
@@ -275,7 +278,7 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			previous_positions->xy4.x = positions->xy4.x;
 			previous_positions->xy4.y = positions->xy4.y;
 
-			current_block->current_xy_position.y++;
+			//current_block->current_xy_position.y++;
 
 			// move all occupied xy positions
 			positions->xy1.y++;
@@ -363,8 +366,10 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 	{
 	case I_BLOCK:
 		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 5, 20);
+		break;
 	case J_BLOCK:
 		return create_occupied_xy_positions(2, 21, 2, 20, 3, 20, 4, 20);
+		break;
 		// Add other cases for different block types if needed
 	}
 }
@@ -372,7 +377,8 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 // todo: thing about initial position etc.
 block initialize_new_block()
 {
-	tile_block_type current_block_type = getRandomBlockType();
+	//tile_block_type current_block_type = getRandomBlockType();
+	tile_block_type current_block_type = I_BLOCK;
 
 	occupied_xy_positions initial_occupied_xy_positions = get_initial_xy_positions_by_block_type(current_block_type);
 
@@ -382,7 +388,7 @@ block initialize_new_block()
 	occupied_xy_positions previous_occupied_positions = initial_occupied_xy_positions;
 
 	const int fast_drop = 0;
-	block current_block = {{2, 20}, current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, fast_drop};
+	block current_block = {current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, fast_drop};
 
 	return current_block;
 }
