@@ -248,16 +248,11 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 			}
 		} else if (current_block->block_type == J_BLOCK) {
 			if (current_block->rotation == RIGHT) {
-				positions->xy1.x++, // position.x + 1;
-				//positions->xy1.y = position.y;
-				//positions->xy2.x// = position.x;
-				positions->xy2.y--;// = position.y - 1;
-				positions->xy3.x--;// = position.x - 1;
-				//positions->xy3.y = position.y;
-				//positions->xy4.x = positions->xy = position.x - 2;
+				positions->xy1.x++;								
+				positions->xy2.y--;
+				positions->xy3.x--;				
 				positions->xy4.x--;
-				positions->xy4.x--;
-				//positions->xy4.y = position.y + 1;
+				positions->xy4.x--;				
 				positions->xy4.y++;
 			}
 		}
