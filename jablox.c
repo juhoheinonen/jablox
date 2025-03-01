@@ -21,7 +21,9 @@ int getRandomInt(int min, int max)
 
 tile_block_type getRandomBlockType()
 {
-	int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
+	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
+	//  start with only giving some of the blocks
+	int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -68,7 +70,7 @@ void update_game_grid(game_tile game_grid[][40], block current_block)
 // very fast solution to hack something
 void rotate_block(game_tile game_grid[][40], block *current_block)
 {
-	xy_position *position = &current_block->current_xy_position;
+	// xy_position *position = &current_block->current_xy_position;
 
 	occupied_xy_positions *positions = &current_block->previous_occupied_xy_positions;
 	occupied_xy_positions *previous_positions = &current_block->previous_occupied_xy_positions;
@@ -86,17 +88,19 @@ void rotate_block(game_tile game_grid[][40], block *current_block)
 	// check current rotation and calculate next position based on it. TODO: generalize this to other blocks
 	if (current_block->block_type == I_BLOCK)
 	{
+		xy_position position = {positions->xy1.x, positions->xy1.y};
+
 		if (current_block->rotation == RIGHT)
 		{
 			// turn down
-			positions->xy1.x = position->x;
-			positions->xy1.y = position->y;
-			positions->xy2.x = position->x;
-			positions->xy2.y = position->y + 1;
-			positions->xy3.x = position->x;
-			positions->xy3.y = position->y + 2;
-			positions->xy4.x = position->x;
-			positions->xy4.y = position->y + 3;
+			positions->xy1.x = position.x;
+			positions->xy1.y = position.y;
+			positions->xy2.x = position.x;
+			positions->xy2.y = position.y + 1;
+			positions->xy3.x = position.x;
+			positions->xy3.y = position.y + 2;
+			positions->xy4.x = position.x;
+			positions->xy4.y = position.y + 3;
 		}
 	}
 }
@@ -174,7 +178,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 	case DIRECTION_ROTATE:
 		// rotate_block(game_grid, current_block);
 		xy_position *position = &current_block->current_xy_position;
-		
+
 		// store previous occupied xy positions
 		previous_positions->xy1.x = positions->xy1.x;
 		previous_positions->xy1.y = positions->xy1.y;
@@ -339,18 +343,46 @@ void mark_block_as_landed(block *current_block)
 	}
 }
 
+occupied_xy_positions create_occupied_xy_positions(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
+{
+	occupied_xy_positions positions;
+	positions.xy1.x = x1;
+	positions.xy1.y = y1;
+	positions.xy2.x = x2;
+	positions.xy2.y = y2;
+	positions.xy3.x = x3;
+	positions.xy3.y = y3;
+	positions.xy4.x = x4;
+	positions.xy4.y = y4;
+	return positions;
+}
+
+occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type block_type)
+{
+	switch (block_type)
+	{
+	case I_BLOCK:
+		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 5, 20);
+	case J_BLOCK:
+		return create_occupied_xy_positions(2, 21, 2, 20, 3, 20, 4, 20);
+		// Add other cases for different block types if needed
+	}
+}
+
 // todo: thing about initial position etc.
 block initialize_new_block()
 {
-	// tile_block_type current_block_type = getRandomBlockType();
+	tile_block_type current_block_type = getRandomBlockType();
+
+	occupied_xy_positions initial_occupied_xy_positions = get_initial_xy_positions_by_block_type(current_block_type);
+
 	//  initially hard-coded to I_BLOCK for development
-	tile_block_type current_block_type = I_BLOCK;
-	occupied_xy_positions occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
-	occupied_xy_positions previous_occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
+	// tile_block_type current_block_type = I_BLOCK;
+	// occupied_xy_positions previous_occupied_positions =  {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
+	occupied_xy_positions previous_occupied_positions = initial_occupied_xy_positions;
 
-	int fast_drop = 0;
-
-	block current_block = {{2, 20}, current_block_type, RIGHT, DIRECTION_DOWN, occupied_positions, previous_occupied_positions, fast_drop};
+	const int fast_drop = 0;
+	block current_block = {{2, 20}, current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, fast_drop};
 
 	return current_block;
 }
@@ -539,7 +571,7 @@ int main(void)
 	update_game_grid(game_grid, current_block);
 
 	while (!WindowShouldClose())
-	{		
+	{
 		if (status == WIN)
 		{
 			while (!IsKeyDown(KEY_ENTER) && !IsKeyDown(KEY_ESCAPE) && !WindowShouldClose())
