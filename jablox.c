@@ -23,8 +23,7 @@ tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	// int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
-	int randomIndex = getRandomInt(I_BLOCK, I_BLOCK);
+	int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -134,7 +133,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
 
-				//current_block->current_xy_position.x--;
+				// current_block->current_xy_position.x--;
 
 				// move all occupied xy positions
 				positions->xy1.x--;
@@ -165,7 +164,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
 
-				//current_block->current_xy_position.x++;
+				// current_block->current_xy_position.x++;
 
 				// move all occupied xy positions
 				positions->xy1.x++;
@@ -178,7 +177,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 
 	case DIRECTION_ROTATE:
 		// rotate_block(game_grid, current_block);
-		//xy_position *position = &current_block->current_xy_position;
+		// xy_position *position = &current_block->current_xy_position;
 
 		// store previous occupied xy positions
 		previous_positions->xy1.x = positions->xy1.x;
@@ -247,6 +246,20 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.y = position.y;
 				current_block->rotation = RIGHT;
 			}
+		} else if (current_block->block_type == J_BLOCK) {
+			if (current_block->rotation == RIGHT) {
+				positions->xy1.x++, // position.x + 1;
+				//positions->xy1.y = position.y;
+				//positions->xy2.x// = position.x;
+				positions->xy2.y--;// = position.y - 1;
+				positions->xy3.x--;// = position.x - 1;
+				//positions->xy3.y = position.y;
+				//positions->xy4.x = positions->xy = position.x - 2;
+				positions->xy4.x--;
+				positions->xy4.x--;
+				//positions->xy4.y = position.y + 1;
+				positions->xy4.y++;
+			}
 		}
 		break;
 	}
@@ -278,7 +291,7 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			previous_positions->xy4.x = positions->xy4.x;
 			previous_positions->xy4.y = positions->xy4.y;
 
-			//current_block->current_xy_position.y++;
+			// current_block->current_xy_position.y++;
 
 			// move all occupied xy positions
 			positions->xy1.y++;
@@ -368,7 +381,7 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 5, 20);
 		break;
 	case J_BLOCK:
-		return create_occupied_xy_positions(2, 21, 2, 20, 3, 20, 4, 20);
+		return create_occupied_xy_positions(2, 19, 2, 20, 3, 20, 4, 20);
 		break;
 		// Add other cases for different block types if needed
 	}
@@ -377,8 +390,8 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 // todo: thing about initial position etc.
 block initialize_new_block()
 {
-	//tile_block_type current_block_type = getRandomBlockType();
-	tile_block_type current_block_type = I_BLOCK;
+	tile_block_type current_block_type = getRandomBlockType();
+	// tile_block_type current_block_type = I_BLOCK;
 
 	occupied_xy_positions initial_occupied_xy_positions = get_initial_xy_positions_by_block_type(current_block_type);
 
@@ -393,7 +406,6 @@ block initialize_new_block()
 	return current_block;
 }
 
-// todo: finish this later
 int can_rotate(game_tile game_grid[][40], block current_block)
 {
 	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
@@ -405,6 +417,7 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 	case I_BLOCK:
 		if (current_rotation == RIGHT)
 		{
+			// check turn down
 			new_positions.xy1.x = positions->xy1.x;
 			new_positions.xy1.y = positions->xy1.y;
 			new_positions.xy2.x = positions->xy1.x;
@@ -416,6 +429,7 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 		}
 		else if (current_rotation == DOWN)
 		{
+			// check turn left
 			new_positions.xy1.x = positions->xy1.x;
 			new_positions.xy1.y = positions->xy1.y;
 			new_positions.xy2.x = positions->xy1.x - 1;
@@ -427,6 +441,7 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 		}
 		else if (current_rotation == LEFT)
 		{
+			// check turn up
 			new_positions.xy1.x = positions->xy1.x;
 			new_positions.xy1.y = positions->xy1.y;
 			new_positions.xy2.x = positions->xy1.x;
@@ -438,6 +453,57 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 		}
 		else if (current_rotation == UP)
 		{
+			// check turn right
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x + 1;
+			new_positions.xy2.y = positions->xy1.y;
+			new_positions.xy3.x = positions->xy1.x + 2;
+			new_positions.xy3.y = positions->xy1.y;
+			new_positions.xy4.x = positions->xy1.x + 3;
+			new_positions.xy4.y = positions->xy1.y;
+		}
+		break;
+	case J_BLOCK:
+		if (current_rotation == RIGHT)
+		{
+			// check turn down
+			new_positions.xy1.x = positions->xy1.x + 1;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x;
+			new_positions.xy2.y = positions->xy1.y + 1;
+			new_positions.xy3.x = positions->xy1.x - 1;
+			new_positions.xy3.y = positions->xy1.y;
+			new_positions.xy4.x = positions->xy1.x - 2;
+			new_positions.xy4.y = positions->xy1.y + 1;
+		}
+		else if (current_rotation == DOWN)
+		{
+			// check turn left
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x - 1;
+			new_positions.xy2.y = positions->xy1.y;
+			new_positions.xy3.x = positions->xy1.x - 2;
+			new_positions.xy3.y = positions->xy1.y;
+			new_positions.xy4.x = positions->xy1.x - 3;
+			new_positions.xy4.y = positions->xy1.y;
+		}
+		else if (current_rotation == LEFT)
+		{
+			// check turn up
+			new_positions.xy1.x = positions->xy1.x;
+			new_positions.xy1.y = positions->xy1.y;
+			new_positions.xy2.x = positions->xy1.x;
+			new_positions.xy2.y = positions->xy1.y - 1;
+			new_positions.xy3.x = positions->xy1.x;
+			new_positions.xy3.y = positions->xy1.y - 2;
+			new_positions.xy4.x = positions->xy1.x;
+			new_positions.xy4.y = positions->xy1.y - 3;
+		}
+		else if (current_rotation == UP)
+		{
+			// check turn right
 			new_positions.xy1.x = positions->xy1.x;
 			new_positions.xy1.y = positions->xy1.y;
 			new_positions.xy2.x = positions->xy1.x + 1;
@@ -532,7 +598,11 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 				break;
 			case I_BLOCK:
 			case I_BLOCK_FALLEN:
-				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, BLUE);
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){0, 121, 241, 200});
+				break;
+			case J_BLOCK:
+			case J_BLOCK_FALLEN:
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){0, 121, 241, 255});
 				break;
 			}
 			// draw grid lines
