@@ -254,6 +254,8 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.x--;
 				positions->xy4.x--;				
 				positions->xy4.y++;
+			} else if (current_block->rotation == DOWN)  {
+				positions->xy1
 			}
 		}
 		break;
