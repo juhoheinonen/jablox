@@ -12,7 +12,7 @@ const double move_down_seconds = 0.3;
 const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
 const int game_grid_height_in_tiles = 40;
 int game_score = 0;
-const int level_1_score_goal = 1;
+const int level_1_score_goal = 10;
 
 int getRandomInt(int min, int max)
 {
@@ -232,9 +232,16 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.x++;
 				current_block->rotation = UP;
 			} else if (current_block->rotation == UP) {
+				/*
+				return create_occupied_xy_positions(2, 19, 2, 20, 3, 20, 4, 20);				
+				*/
+
 				positions->xy1.x--;
-				positions->xy2.x--;
-				positions->xy3.x++;
+				positions->xy1.y--;
+				positions->xy2.x--;				
+				positions->xy2.y++;								
+				positions->xy3.x++;				
+				positions->xy4.x++;
 				positions->xy4.y++;
 				positions->xy4.y++;
 				current_block->rotation = RIGHT;
@@ -446,51 +453,47 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 	case J_BLOCK:
 		if (current_rotation == RIGHT)
 		{
-			// check turn down
 			new_positions.xy1.x = positions->xy1.x + 1;
 			new_positions.xy1.y = positions->xy1.y;
-			new_positions.xy2.x = positions->xy1.x;
-			new_positions.xy2.y = positions->xy1.y + 1;
-			new_positions.xy3.x = positions->xy1.x - 1;
-			new_positions.xy3.y = positions->xy1.y;
-			new_positions.xy4.x = positions->xy1.x - 2;
-			new_positions.xy4.y = positions->xy1.y + 1;
+			new_positions.xy2.x = positions->xy2.x;
+			new_positions.xy2.y = positions->xy2.y - 1;
+			new_positions.xy3.x = positions->xy3.x - 1;
+			new_positions.xy3.y = positions->xy3.y;
+			new_positions.xy4.x = positions->xy4.x - 2;
+			new_positions.xy4.y = positions->xy4.y + 1;
 		}
 		else if (current_rotation == DOWN)
 		{
-			// check turn left
 			new_positions.xy1.x = positions->xy1.x;
-			new_positions.xy1.y = positions->xy1.y;
-			new_positions.xy2.x = positions->xy1.x - 1;
-			new_positions.xy2.y = positions->xy1.y;
-			new_positions.xy3.x = positions->xy1.x - 2;
-			new_positions.xy3.y = positions->xy1.y;
-			new_positions.xy4.x = positions->xy1.x - 3;
-			new_positions.xy4.y = positions->xy1.y;
+			new_positions.xy1.y = positions->xy1.y + 1;
+			new_positions.xy2.x = positions->xy2.x + 1;
+			new_positions.xy2.y = positions->xy2.y;
+			new_positions.xy3.x = positions->xy3.x;
+			new_positions.xy3.y = positions->xy3.y - 1;
+			new_positions.xy4.x = positions->xy4.x - 1;
+			new_positions.xy4.y = positions->xy4.y - 2;
 		}
 		else if (current_rotation == LEFT)
 		{
-			// check turn up
 			new_positions.xy1.x = positions->xy1.x;
 			new_positions.xy1.y = positions->xy1.y;
-			new_positions.xy2.x = positions->xy1.x;
-			new_positions.xy2.y = positions->xy1.y - 1;
-			new_positions.xy3.x = positions->xy1.x;
-			new_positions.xy3.y = positions->xy1.y - 2;
-			new_positions.xy4.x = positions->xy1.x;
-			new_positions.xy4.y = positions->xy1.y - 3;
+			new_positions.xy2.x = positions->xy2.x;
+			new_positions.xy2.y = positions->xy2.y + 1;
+			new_positions.xy3.x = positions->xy3.x;
+			new_positions.xy3.y = positions->xy3.y + 2;
+			new_positions.xy4.x = positions->xy4.x + 1;
+			new_positions.xy4.y = positions->xy4.y - 1;
 		}
 		else if (current_rotation == UP)
 		{
-			// check turn right
-			new_positions.xy1.x = positions->xy1.x;
-			new_positions.xy1.y = positions->xy1.y;
-			new_positions.xy2.x = positions->xy1.x + 1;
-			new_positions.xy2.y = positions->xy1.y;
-			new_positions.xy3.x = positions->xy1.x + 2;
-			new_positions.xy3.y = positions->xy1.y;
-			new_positions.xy4.x = positions->xy1.x + 3;
-			new_positions.xy4.y = positions->xy1.y;
+			new_positions.xy1.x = positions->xy1.x - 1;
+			new_positions.xy1.y = positions->xy1.y - 1;
+			new_positions.xy2.x = positions->xy2.x - 1;
+			new_positions.xy2.y = positions->xy2.y + 1;
+			new_positions.xy3.x = positions->xy3.x + 1;
+			new_positions.xy3.y = positions->xy3.y;
+			new_positions.xy4.x = positions->xy4.x + 2;
+			new_positions.xy4.y = positions->xy4.y + 1;
 		}
 		break;
 	default:
