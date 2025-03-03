@@ -67,44 +67,6 @@ void update_game_grid(game_tile game_grid[][40], block current_block)
 	game_grid[current_block.occupied_xy_positions.xy4.x][current_block.occupied_xy_positions.xy4.y].type = current_block.block_type;
 }
 
-// very fast solution to hack something
-void rotate_block(game_tile game_grid[][40], block *current_block)
-{
-	// xy_position *position = &current_block->current_xy_position;
-
-	occupied_xy_positions *positions = &current_block->previous_occupied_xy_positions;
-	occupied_xy_positions *previous_positions = &current_block->previous_occupied_xy_positions;
-
-	// store previous occupied xy positions
-	previous_positions->xy1.x = positions->xy1.x;
-	previous_positions->xy1.y = positions->xy1.y;
-	previous_positions->xy2.x = positions->xy2.x;
-	previous_positions->xy2.y = positions->xy2.y;
-	previous_positions->xy3.x = positions->xy3.x;
-	previous_positions->xy3.y = positions->xy3.y;
-	previous_positions->xy4.x = positions->xy4.x;
-	previous_positions->xy4.y = positions->xy4.y;
-
-	// check current rotation and calculate next position based on it. TODO: generalize this to other blocks
-	if (current_block->block_type == I_BLOCK)
-	{
-		xy_position position = {positions->xy1.x, positions->xy1.y};
-
-		if (current_block->rotation == RIGHT)
-		{
-			// turn down
-			positions->xy1.x = position.x;
-			positions->xy1.y = position.y;
-			positions->xy2.x = position.x;
-			positions->xy2.y = position.y + 1;
-			positions->xy3.x = position.x;
-			positions->xy3.y = position.y + 2;
-			positions->xy4.x = position.x;
-			positions->xy4.y = position.y + 3;
-		}
-	}
-}
-
 void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_block)
 {
 	// get all occupied xy positions
@@ -254,13 +216,19 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.x--;
 				positions->xy4.x--;				
 				positions->xy4.y++;
+				current_block->rotation = DOWN;
 			} else if (current_block->rotation == DOWN)  {
-				positions->xy1.x--;
-				positions->xy2.y++;
+				positions->xy1.y++;
+				positions->xy2.x++;
+				positions->xy2.y--;
+				positions->xy3.y--;
 				positions->xy3.x--;
-				positions->xy4.x--;
-				positions->xy4.x--;
-				positions->xy4.y--;
+				positions->xy3.y--;
+				positions->xy3.y--;
+				current_block->rotation = LEFT;
+			} else if (current_block->rotation == LEFT) {
+
+				current_block->rotation = UP;
 			}
 		}
 		break;
