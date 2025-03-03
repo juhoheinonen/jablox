@@ -16,7 +16,7 @@ const int level_1_score_goal = 1;
 
 int getRandomInt(int min, int max)
 {
-	return (rand() % max) + min;
+    return min + rand() % (max - min + 1);
 }
 
 tile_block_type getRandomBlockType()
