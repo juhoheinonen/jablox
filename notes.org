@@ -1,6 +1,4 @@
 * Process:
 
-** TODO rotate
-** TODO can_rotate
-** TODO row_full
-** TODO game_over check
+** TODO blocks after J_BLOCK
+** TODO game over check
