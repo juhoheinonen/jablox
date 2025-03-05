@@ -429,27 +429,30 @@ occupied_xy_positions get_new_positions(block current_block)
 	switch (current_block.block_type)
 	{
 	case L_BLOCK:
+
+		//return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 4, 19);
+
 		if (current_block.rotation == RIGHT)
-		{
-			new_positions.xy1.x = positions.xy1.x + 1;
-			new_positions.xy1.y = positions.xy1.y;
-			new_positions.xy2.x = positions.xy2.x;
-			new_positions.xy2.y = positions.xy2.y - 1;
-			new_positions.xy3.x = positions.xy3.x - 1;
-			new_positions.xy3.y = positions.xy3.y;
+		{	
+			new_positions.xy1.x = positions.xy1.x;		
+			new_positions.xy1.y = positions.xy1.y - 2;			
+			new_positions.xy2.x = positions.xy2.x - 1;
+			new_positions.xy2.y = positions.xy2.y - 1;			
+			new_positions.xy3.x = positions.xy3.x - 2;			
+			new_positions.xy3.y = positions.xy3.y;			
 			new_positions.xy4.x = positions.xy4.x - 2;
-			new_positions.xy4.y = positions.xy4.y + 1;
+			new_positions.xy4.y = positions.xy4.y;
 		}
 		else if (current_block.rotation == DOWN)
 		{
-			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.x = positions.xy1.x + 2;
 			new_positions.xy1.y = positions.xy1.y;
-			new_positions.xy2.x = positions.xy2.x;
-			new_positions.xy2.y = positions.xy2.y - 1;
-			new_positions.xy3.x = positions.xy3.x - 1;
-			new_positions.xy3.y = positions.xy3.y;
-			new_positions.xy4.x = positions.xy4.x - 2;
-			new_positions.xy4.y = positions.xy4.y + 1;
+			new_positions.xy2.x = positions.xy2.x++;
+			new_positions.xy2.y = positions.xy2.y--;
+			new_positions.xy3.x = positions.xy3.x;
+			new_positions.xy3.y = positions.xy3.y - 2;
+			new_positions.xy4.x = positions.xy4.x--;
+			new_positions.xy4.y = positions.xy4.y--;
 		}
 		else if (current_block.rotation == LEFT)
 		{
