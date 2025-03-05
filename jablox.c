@@ -253,7 +253,9 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.y++;
 				current_block->rotation = RIGHT;
 			}
-		} else if (current_block->block_type == L_BLOCK) {			
+		}
+		else if (current_block->block_type == L_BLOCK)
+		{
 			occupied_xy_positions new_positions = get_new_positions(*current_block);
 			positions->xy1.x = new_positions.xy1.x;
 			positions->xy1.y = new_positions.xy1.y;
@@ -263,15 +265,22 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 			positions->xy3.y = new_positions.xy3.y;
 			positions->xy4.x = new_positions.xy4.x;
 			positions->xy4.y = new_positions.xy4.y;
-			if (current_block->rotation == RIGHT) {
+			if (current_block->rotation == RIGHT)
+			{
 				current_block->rotation = DOWN;
-			} else if (current_block->rotation == DOWN) {
+			}
+			else if (current_block->rotation == DOWN)
+			{
 				current_block->rotation = LEFT;
-			} else if (current_block->rotation == LEFT) {
+			}
+			else if (current_block->rotation == LEFT)
+			{
 				current_block->rotation = UP;
-			} else if (current_block->rotation == UP) {
+			}
+			else if (current_block->rotation == UP)
+			{
 				current_block->rotation = RIGHT;
-			}		
+			}
 		}
 		break;
 	}
@@ -402,7 +411,6 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 	}
 }
 
-// todo: thing about initial position etc.
 block initialize_new_block()
 {
 	tile_block_type current_block_type = getRandomBlockType();
@@ -424,57 +432,57 @@ block initialize_new_block()
 occupied_xy_positions get_new_positions(block current_block)
 {
 	occupied_xy_positions positions = current_block.occupied_xy_positions;
-	
+
 	occupied_xy_positions new_positions;
 	switch (current_block.block_type)
 	{
 	case L_BLOCK:
 
-		//return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 4, 19);
+		// return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 4, 19);
 
 		if (current_block.rotation == RIGHT)
-		{	
-			new_positions.xy1.x = positions.xy1.x;		
-			new_positions.xy1.y = positions.xy1.y - 2;			
+		{
+			new_positions.xy1.x = positions.xy1.x;
+			new_positions.xy1.y = positions.xy1.y - 2;
 			new_positions.xy2.x = positions.xy2.x - 1;
-			new_positions.xy2.y = positions.xy2.y - 1;			
-			new_positions.xy3.x = positions.xy3.x - 2;			
-			new_positions.xy3.y = positions.xy3.y;			
-			new_positions.xy4.x = positions.xy4.x - 2;
-			new_positions.xy4.y = positions.xy4.y;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x - 2;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 1;
+			new_positions.xy4.y = positions.xy4.y + 1;
 		}
 		else if (current_block.rotation == DOWN)
 		{
 			new_positions.xy1.x = positions.xy1.x + 2;
 			new_positions.xy1.y = positions.xy1.y;
-			new_positions.xy2.x = positions.xy2.x++;
-			new_positions.xy2.y = positions.xy2.y--;
+			new_positions.xy2.x = positions.xy2.x + 1;
+			new_positions.xy2.y = positions.xy2.y - 1;
 			new_positions.xy3.x = positions.xy3.x;
 			new_positions.xy3.y = positions.xy3.y - 2;
-			new_positions.xy4.x = positions.xy4.x--;
-			new_positions.xy4.y = positions.xy4.y--;
+			new_positions.xy4.x = positions.xy4.x - 1;
+			new_positions.xy4.y = positions.xy4.y - 1;
 		}
 		else if (current_block.rotation == LEFT)
 		{
-			new_positions.xy1.x = positions.xy1.x + 1;
-			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy1.x = positions.xy1.x - 1;
+			new_positions.xy1.y = positions.xy1.y + 2;
 			new_positions.xy2.x = positions.xy2.x;
-			new_positions.xy2.y = positions.xy2.y - 1;
-			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy2.y = positions.xy2.y + 1;
+			new_positions.xy3.x = positions.xy3.x + 1;
 			new_positions.xy3.y = positions.xy3.y;
-			new_positions.xy4.x = positions.xy4.x - 2;
-			new_positions.xy4.y = positions.xy4.y + 1;
+			new_positions.xy4.x = positions.xy4.x;
+			new_positions.xy4.y = positions.xy4.y - 1;
 		}
 		else if (current_block.rotation == UP)
 		{
-			new_positions.xy1.x = positions.xy1.x + 1;
-			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy1.x = positions.xy1.x - 1;
+			new_positions.xy1.y = positions.xy1.y - 1;
 			new_positions.xy2.x = positions.xy2.x;
-			new_positions.xy2.y = positions.xy2.y - 1;
-			new_positions.xy3.x = positions.xy3.x - 1;
-			new_positions.xy3.y = positions.xy3.y;
-			new_positions.xy4.x = positions.xy4.x - 2;
-			new_positions.xy4.y = positions.xy4.y + 1;
+			new_positions.xy2.y = positions.xy2.y;
+			new_positions.xy3.x = positions.xy3.x + 1;
+			new_positions.xy3.y = positions.xy3.y + 1;
+			new_positions.xy4.x = positions.xy4.x + 2;
+			new_positions.xy4.y = positions.xy4.y;
 		}
 
 		break;
@@ -714,14 +722,6 @@ int main(void)
 
 	srand(time(NULL)); // Initialize random seed
 
-	// tile_block_type current_block_type = getRandomBlockType();
-	//  initially hard-coded to I_BLOCK for development
-	// tile_block_type current_block_type = I_BLOCK;
-	// occupied_xy_positions occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
-	// occupied_xy_positions previous_occupied_positions = {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
-
-	// block current_block = {{2, 20}, current_block_type, RIGHT, DIRECTION_DOWN, occupied_positions, previous_occupied_positions};
-
 	block current_block = initialize_new_block();
 
 	update_game_grid(game_grid, current_block);
@@ -735,6 +735,17 @@ int main(void)
 				BeginDrawing();
 				ClearBackground(RAYWHITE);
 				DrawText(TextFormat("Yes, you finished Jablox!!!"), screenWidth / 2, 400, 50, BLACK);
+				EndDrawing();
+			}
+			break;
+		}
+		else if (status == GAME_OVER)
+		{
+			while (!IsKeyDown(KEY_ENTER) && !IsKeyDown(KEY_ESCAPE) && !WindowShouldClose())
+			{
+				BeginDrawing();
+				ClearBackground(RAYWHITE);
+				DrawText(TextFormat("Game over. No worries, it's only a game!!!"), screenWidth / 2, 400, 50, BLACK);
 				EndDrawing();
 			}
 			break;
@@ -824,10 +835,12 @@ int main(void)
 				{
 					status = WIN;
 				}
+				// check if game_over, block too high
+				else if (current_block.occupied_xy_positions.xy1.y <= 20 || current_block.occupied_xy_positions.xy2.y <= 20 || current_block.occupied_xy_positions.xy3.y <= 20 || current_block.occupied_xy_positions.xy4.y <= 20)
+				{
+					status = GAME_OVER;
+				}
 			}
-
-			// todo, many things:
-			// --> check if game over, either at upper border or score full
 		}
 
 		BeginDrawing();
