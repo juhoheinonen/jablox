@@ -835,11 +835,6 @@ int main(void)
 				{
 					status = WIN;
 				}
-				// check if game_over, block too high
-				else if (current_block.occupied_xy_positions.xy1.y <= 20 || current_block.occupied_xy_positions.xy2.y <= 20 || current_block.occupied_xy_positions.xy3.y <= 20 || current_block.occupied_xy_positions.xy4.y <= 20)
-				{
-					status = GAME_OVER;
-				}
 			}
 		}
 
