@@ -16,16 +16,18 @@ const int level_1_score_goal = 10;
 
 int getRandomInt(int min, int max)
 {
-    return min + rand() % (max - min + 1);
+	return min + rand() % (max - min + 1);
 }
 
 tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
+	int randomIndex = getRandomInt(I_BLOCK, L_BLOCK);
 	return (tile_block_type)randomIndex;
 }
+
+occupied_xy_positions get_new_positions(block current_block);
 
 void initialize_game_grid(game_tile game_grid[][40], int width, int height)
 {
@@ -208,44 +210,68 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				positions->xy4.y = position.y;
 				current_block->rotation = RIGHT;
 			}
-		} else if (current_block->block_type == J_BLOCK) {
-			if (current_block->rotation == RIGHT) {
-				positions->xy1.x++;								
+		}
+		else if (current_block->block_type == J_BLOCK)
+		{
+			if (current_block->rotation == RIGHT)
+			{
+				positions->xy1.x++;
 				positions->xy2.y--;
-				positions->xy3.x--;				
+				positions->xy3.x--;
 				positions->xy4.x--;
-				positions->xy4.x--;				
+				positions->xy4.x--;
 				positions->xy4.y++;
 				current_block->rotation = DOWN;
-			} else if (current_block->rotation == DOWN)  {
+			}
+			else if (current_block->rotation == DOWN)
+			{
 				positions->xy1.y++;
-				positions->xy2.x++;				
+				positions->xy2.x++;
 				positions->xy3.y--;
 				positions->xy4.x--;
 				positions->xy4.y--;
 				positions->xy4.y--;
 				current_block->rotation = LEFT;
-			} else if (current_block->rotation == LEFT) {				
+			}
+			else if (current_block->rotation == LEFT)
+			{
 				positions->xy3.y++;
 				positions->xy4.y--;
 				positions->xy4.x++;
 				positions->xy4.x++;
 				current_block->rotation = UP;
-			} else if (current_block->rotation == UP) {
-				/*
-				return create_occupied_xy_positions(2, 19, 2, 20, 3, 20, 4, 20);				
-				*/
-
+			}
+			else if (current_block->rotation == UP)
+			{
 				positions->xy1.x--;
 				positions->xy1.y--;
-				positions->xy2.x--;				
-				positions->xy2.y++;								
-				positions->xy3.x++;				
+				positions->xy2.x--;
+				positions->xy2.y++;
+				positions->xy3.x++;
 				positions->xy4.x++;
 				positions->xy4.y++;
 				positions->xy4.y++;
 				current_block->rotation = RIGHT;
 			}
+		} else if (current_block->block_type == L_BLOCK) {			
+			occupied_xy_positions new_positions = get_new_positions(*current_block);
+			positions->xy1.x = new_positions.xy1.x;
+			positions->xy1.y = new_positions.xy1.y;
+			positions->xy2.x = new_positions.xy2.x;
+			positions->xy2.y = new_positions.xy2.y;
+			positions->xy3.x = new_positions.xy3.x;
+			positions->xy3.y = new_positions.xy3.y;
+			positions->xy4.x = new_positions.xy4.x;
+			positions->xy4.y = new_positions.xy4.y;
+			if (current_block->rotation == RIGHT) {
+				current_block->rotation = DOWN;
+			} else if (current_block->rotation == DOWN) {
+				current_block->rotation = LEFT;
+			} else if (current_block->rotation == LEFT) {
+				current_block->rotation = UP;
+			} else if (current_block->rotation == UP) {
+				current_block->rotation = RIGHT;
+			}		
 		}
 		break;
 	}
@@ -369,7 +395,10 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 	case J_BLOCK:
 		return create_occupied_xy_positions(2, 19, 2, 20, 3, 20, 4, 20);
 		break;
-		// Add other cases for different block types if needed
+	case L_BLOCK:
+		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 4, 19);
+		break;
+		// Add other cases for different block types when needed
 	}
 }
 
@@ -390,6 +419,65 @@ block initialize_new_block()
 	block current_block = {current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, fast_drop};
 
 	return current_block;
+}
+
+occupied_xy_positions get_new_positions(block current_block)
+{
+	occupied_xy_positions positions = current_block.occupied_xy_positions;
+	
+	occupied_xy_positions new_positions;
+	switch (current_block.block_type)
+	{
+	case L_BLOCK:
+		if (current_block.rotation == RIGHT)
+		{
+			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 2;
+			new_positions.xy4.y = positions.xy4.y + 1;
+		}
+		else if (current_block.rotation == DOWN)
+		{
+			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 2;
+			new_positions.xy4.y = positions.xy4.y + 1;
+		}
+		else if (current_block.rotation == LEFT)
+		{
+			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 2;
+			new_positions.xy4.y = positions.xy4.y + 1;
+		}
+		else if (current_block.rotation == UP)
+		{
+			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 2;
+			new_positions.xy4.y = positions.xy4.y + 1;
+		}
+
+		break;
+	}
+
+	return new_positions;
 }
 
 int can_rotate(game_tile game_grid[][40], block current_block)
@@ -496,6 +584,9 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 			new_positions.xy4.y = positions->xy4.y + 1;
 		}
 		break;
+	case L_BLOCK:
+		new_positions = get_new_positions(current_block);
+		break;
 	default:
 		return 0;
 	}
@@ -585,6 +676,10 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 			case J_BLOCK:
 			case J_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){0, 121, 241, 255});
+				break;
+			case L_BLOCK:
+			case L_BLOCK_FALLEN:
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, ORANGE);
 				break;
 			}
 			// draw grid lines
