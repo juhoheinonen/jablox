@@ -63,6 +63,13 @@ typedef enum
     DIRECTION_ROTATE
 } direction;
 
+typedef enum
+{
+    NORMAL,
+    FAST,
+    STRAIGHT_DOWN
+} drop_speed;
+
 typedef struct
 {
     // these point to left bottom corner of the block in its original format
@@ -72,7 +79,7 @@ typedef struct
     direction direction;
     occupied_xy_positions occupied_xy_positions;
     occupied_xy_positions previous_occupied_xy_positions;
-    int fast_drop;
+    drop_speed drop_speed;
 } block;
 
 // enum for game status, like running, game over and win

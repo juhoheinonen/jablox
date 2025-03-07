@@ -422,9 +422,9 @@ block initialize_new_block()
 	// tile_block_type current_block_type = I_BLOCK;
 	// occupied_xy_positions previous_occupied_positions =  {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
 	occupied_xy_positions previous_occupied_positions = initial_occupied_xy_positions;
-
-	const int fast_drop = 0;
-	block current_block = {current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, fast_drop};
+	
+	drop_speed initial_drop_speed = NORMAL;
+	block current_block = {current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, initial_drop_speed};
 
 	return current_block;
 }
@@ -761,11 +761,16 @@ int main(void)
 		{
 			current_block.direction = DIRECTION_RIGHT;
 		}
-		if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_SPACE))
+		if (IsKeyPressed(KEY_DOWN))
 		{
 			current_block.direction = DIRECTION_DOWN;
-			current_block.fast_drop = 1;
+			current_block.drop_speed = FAST;
 		}
+		if (IsKeyPressed(KEY_SPACE)) {
+			current_block.direction = DIRECTION_DOWN;
+			current_block.drop_speed = STRAIGHT_DOWN;
+		}
+
 		// if block also for rotation
 		if (IsKeyPressed(KEY_UP))
 		{
@@ -789,14 +794,13 @@ int main(void)
 				update_game_grid(game_grid, current_block);
 			}
 		}
-		if (seconds_elapsed_for_move_down > move_down_seconds || current_block.fast_drop)
+		if (seconds_elapsed_for_move_down > move_down_seconds || current_block.drop_speed == FAST || current_block.drop_speed == STRAIGHT_DOWN)
 		{
-			seconds_elapsed_for_move_down = 0.0;
-			// current_block.fast_drop = 0;
+			seconds_elapsed_for_move_down = 0.0;			
 
 			int hit_down = 0;
 
-			if (current_block.fast_drop)
+			if (current_block.drop_speed == STRAIGHT_DOWN)
 			{
 				while (hit_down == 0)
 				{
@@ -823,6 +827,7 @@ int main(void)
 				}
 				else
 				{
+					current_block.drop_speed = NORMAL;
 					update_game_grid(game_grid, current_block);
 				}
 			}
