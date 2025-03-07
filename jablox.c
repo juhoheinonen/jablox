@@ -410,6 +410,15 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 	case O_BLOCK:
 		return create_occupied_xy_positions(2, 20, 3, 20, 2, 19, 3, 19);
 		break;
+	case S_BLOCK:
+		return create_occupied_xy_positions(2, 20, 3, 20, 3, 19, 4, 19);
+		break;
+	case T_BLOCK:
+		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 3, 19);
+		break;
+	case Z_BLOCK:
+		return create_occupied_xy_positions(2, 19, 3, 19, 3, 20, 4, 20);
+		break;
 		// Add other cases for different block types when needed
 	}
 }
@@ -600,6 +609,7 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 		}
 		break;
 	case L_BLOCK:
+	case O_BLOCK:
 		new_positions = get_new_positions(current_block);
 		break;
 	default:
