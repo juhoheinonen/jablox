@@ -23,8 +23,6 @@ typedef enum
     Z_BLOCK_FALLEN        
 } tile_block_type;
 
-
-
 typedef struct
 {
     int x;
