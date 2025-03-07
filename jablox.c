@@ -396,28 +396,30 @@ occupied_xy_positions create_occupied_xy_positions(int x1, int y1, int x2, int y
 
 occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type block_type)
 {
+	int initial_y = 10;
+
 	switch (block_type)
 	{
 	case I_BLOCK:
-		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 5, 20);
+		return create_occupied_xy_positions(2, initial_y, 3, initial_y, 4, initial_y, 5, initial_y);
 		break;
 	case J_BLOCK:
-		return create_occupied_xy_positions(2, 19, 2, 20, 3, 20, 4, 20);
+		return create_occupied_xy_positions(2, initial_y-1, 2, initial_y, 3, initial_y, 4, initial_y);
 		break;
 	case L_BLOCK:
-		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 4, 19);
+		return create_occupied_xy_positions(2, initial_y, 3, initial_y, 4, initial_y, 4, initial_y-1);
 		break;
 	case O_BLOCK:
-		return create_occupied_xy_positions(2, 20, 3, 20, 2, 19, 3, 19);
+		return create_occupied_xy_positions(2, initial_y, 3, initial_y, 2, initial_y-1, 3, initial_y-1);
 		break;
 	case S_BLOCK:
-		return create_occupied_xy_positions(2, 20, 3, 20, 3, 19, 4, 19);
+		return create_occupied_xy_positions(2, initial_y, 3, initial_y, 3, initial_y-1, 4, initial_y-1);
 		break;
 	case T_BLOCK:
-		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 3, 19);
+		return create_occupied_xy_positions(2, initial_y, 3, initial_y, 4, initial_y, 3, initial_y-1);
 		break;
 	case Z_BLOCK:
-		return create_occupied_xy_positions(2, 19, 3, 19, 3, 20, 4, 20);
+		return create_occupied_xy_positions(2, initial_y-1, 3, initial_y-1, 3, initial_y, 4, initial_y);
 		break;
 		// Add other cases for different block types when needed
 	}
@@ -777,7 +779,7 @@ int main(void)
 			{
 				BeginDrawing();
 				ClearBackground(RAYWHITE);
-				DrawText(TextFormat("Game over. No worries, it's only a game!!!"), screenWidth / 2, 400, 50, BLACK);
+				DrawText(TextFormat("Game over. No worries, it's only a game!!!"), screenWidth / 3, 400, 50, BLACK);
 				EndDrawing();
 			}
 			break;
@@ -846,6 +848,11 @@ int main(void)
 					update_game_grid(game_grid, current_block);
 				}
 				current_block = initialize_new_block();
+				// check if already hit_down -> end game
+				if (check_hit_down(game_grid, current_block)) {
+					status = GAME_OVER;
+					continue;
+				};
 			}
 			else
 			{
@@ -857,6 +864,8 @@ int main(void)
 					mark_block_as_landed(&current_block);
 					update_game_grid(game_grid, current_block);
 					current_block = initialize_new_block();
+					status = GAME_OVER;
+					continue;
 				}
 				else
 				{
