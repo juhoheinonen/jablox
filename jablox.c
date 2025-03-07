@@ -523,10 +523,53 @@ occupied_xy_positions get_new_positions(block current_block)
 		}
 		break;
 	case T_BLOCK:
+		//return create_occupied_xy_positions(2, initial_y, 3, initial_y, 4, initial_y, 3, initial_y - 1);
+		if (current_block.rotation == RIGHT)
+		{
+			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.y = positions.xy1.y - 1;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y;
+			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy3.y = positions.xy3.y + 1;
+			new_positions.xy4.x = positions.xy4.x + 1;
+			new_positions.xy4.y = positions.xy4.y + 1;
+		}
+		else if (current_block.rotation == DOWN)
+		{
+			new_positions.xy1.x = positions.xy1.x - 1;
+			new_positions.xy1.y = positions.xy1.y + 1;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y;
+			new_positions.xy3.x = positions.xy3.x + 1;
+			new_positions.xy3.y = positions.xy3.y - 1;
+			new_positions.xy4.x = positions.xy4.x - 1;
+			new_positions.xy4.y = positions.xy4.y + 1;
+		}
+		else if (current_block.rotation == LEFT)
+		{
+			new_positions.xy1.x = positions.xy1.x + 1;
+			new_positions.xy1.y = positions.xy1.y - 1;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y;
+			new_positions.xy3.x = positions.xy3.x - 1;
+			new_positions.xy3.y = positions.xy3.y + 1;
+			new_positions.xy4.x = positions.xy4.x - 1;
+			new_positions.xy4.y = positions.xy4.y - 1;
+		}
+		else if (current_block.rotation == UP)
+		{
+			new_positions.xy1.x = positions.xy1.x - 1;
+			new_positions.xy1.y = positions.xy1.y + 1;
+			new_positions.xy2.x = positions.xy2.x;
+			new_positions.xy2.y = positions.xy2.y;
+			new_positions.xy3.x = positions.xy3.x + 1;
+			new_positions.xy3.y = positions.xy3.y - 1;
+			new_positions.xy4.x = positions.xy4.x + 1;
+			new_positions.xy4.y = positions.xy4.y - 1;
+		}
 		break;
-	case Z_BLOCK:
-		//return create_occupied_xy_positions(2, initial_y - 1, 3, initial_y - 1, 3, initial_y, 4, initial_y);
-
+	case Z_BLOCK:		
 		if (current_block.rotation == RIGHT || current_block.rotation == LEFT)
 		{
 			new_positions.xy1.x = positions.xy1.x;
