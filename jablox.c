@@ -686,10 +686,12 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 				break;
 			case I_BLOCK:
 			case I_BLOCK_FALLEN:
+				// light blue
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){0, 121, 241, 200});
 				break;
 			case J_BLOCK:
 			case J_BLOCK_FALLEN:
+				// blue
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){0, 121, 241, 255});
 				break;
 			case L_BLOCK:
@@ -699,6 +701,10 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 			case O_BLOCK:
 			case O_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, YELLOW);
+				break;
+			case S_BLOCK:
+			case S_BLOCK_FALLEN:
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, GREEN);
 				break;
 			}
 			// draw grid lines
