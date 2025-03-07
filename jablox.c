@@ -523,7 +523,7 @@ occupied_xy_positions get_new_positions(block current_block)
 		}
 		break;
 	case T_BLOCK:
-		//return create_occupied_xy_positions(2, initial_y, 3, initial_y, 4, initial_y, 3, initial_y - 1);
+		// return create_occupied_xy_positions(2, initial_y, 3, initial_y, 4, initial_y, 3, initial_y - 1);
 		if (current_block.rotation == RIGHT)
 		{
 			new_positions.xy1.x = positions.xy1.x + 1;
@@ -569,7 +569,7 @@ occupied_xy_positions get_new_positions(block current_block)
 			new_positions.xy4.y = positions.xy4.y - 1;
 		}
 		break;
-	case Z_BLOCK:		
+	case Z_BLOCK:
 		if (current_block.rotation == RIGHT || current_block.rotation == LEFT)
 		{
 			new_positions.xy1.x = positions.xy1.x;
@@ -584,7 +584,7 @@ occupied_xy_positions get_new_positions(block current_block)
 		else if (current_block.rotation == DOWN || current_block.rotation == UP)
 		{
 			new_positions.xy1.x = positions.xy1.x;
-			new_positions.xy1.y = positions.xy1.y -2;
+			new_positions.xy1.y = positions.xy1.y - 2;
 			new_positions.xy2.x = positions.xy2.x + 1;
 			new_positions.xy2.y = positions.xy2.y - 1;
 			new_positions.xy3.x = positions.xy3.x;
@@ -945,7 +945,7 @@ int main(void)
 				// check if already hit_down -> end game
 				if (check_hit_down(game_grid, current_block))
 				{
-					// status = GAME_OVER;
+					status = GAME_OVER;
 					continue;
 				};
 			}
@@ -959,8 +959,11 @@ int main(void)
 					mark_block_as_landed(&current_block);
 					update_game_grid(game_grid, current_block);
 					current_block = initialize_new_block();
-					// status = GAME_OVER;
-					continue;
+					if (check_hit_down(game_grid, current_block))
+					{
+						status = GAME_OVER;
+						continue;
+					};
 				}
 				else
 				{
