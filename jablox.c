@@ -486,10 +486,10 @@ occupied_xy_positions get_new_positions(block current_block)
 
 		break;
 
-		case O_BLOCK:
-			// this block does not need rotating
-			new_positions = positions;
-			break;
+	case O_BLOCK:
+		// this block does not need rotating
+		new_positions = positions;
+		break;
 	}
 
 	return new_positions;
@@ -697,7 +697,7 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 			case L_BLOCK:
 			case L_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, ORANGE);
-				break;			
+				break;
 			case O_BLOCK:
 			case O_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, YELLOW);
@@ -705,6 +705,14 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 			case S_BLOCK:
 			case S_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, GREEN);
+				break;
+			case T_BLOCK:
+			case T_BLOCK_FALLEN:
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, PURPLE);
+				break;
+			case Z_BLOCK:
+			case Z_BLOCK_FALLEN:
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, RED);
 				break;
 			}
 			// draw grid lines
