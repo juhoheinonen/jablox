@@ -788,8 +788,7 @@ int main(void)
 		// Listen for direction keys
 		if (IsKeyPressed(KEY_LEFT))
 		{
-			current_block.direction = DIRECTION_LEFT;
-			// TraceLog(LOG_INFO, "Left");
+			current_block.direction = DIRECTION_LEFT;			
 		}
 		if (IsKeyPressed(KEY_RIGHT))
 		{
