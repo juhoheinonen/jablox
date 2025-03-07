@@ -863,7 +863,7 @@ int main(void)
 			{
 				BeginDrawing();
 				ClearBackground(RAYWHITE);
-				DrawText(TextFormat("Yes, you finished Jablox!!!"), screenWidth / 2, 400, 50, BLACK);
+				DrawText(TextFormat("Yes, you finished Jablox!!!"), screenWidth / 3, 400, 50, BLACK);
 				EndDrawing();
 			}
 			break;
