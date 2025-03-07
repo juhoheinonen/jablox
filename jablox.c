@@ -23,7 +23,7 @@ tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	int randomIndex = getRandomInt(I_BLOCK, L_BLOCK);
+	int randomIndex = getRandomInt(I_BLOCK, O_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -407,6 +407,9 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 	case L_BLOCK:
 		return create_occupied_xy_positions(2, 20, 3, 20, 4, 20, 4, 19);
 		break;
+	case O_BLOCK:
+		return create_occupied_xy_positions(2, 20, 3, 20, 2, 19, 3, 19);
+		break;
 		// Add other cases for different block types when needed
 	}
 }
@@ -414,15 +417,11 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
 block initialize_new_block()
 {
 	tile_block_type current_block_type = getRandomBlockType();
-	// tile_block_type current_block_type = I_BLOCK;
 
 	occupied_xy_positions initial_occupied_xy_positions = get_initial_xy_positions_by_block_type(current_block_type);
 
-	//  initially hard-coded to I_BLOCK for development
-	// tile_block_type current_block_type = I_BLOCK;
-	// occupied_xy_positions previous_occupied_positions =  {{2, 20}, {3, 20}, {4, 20}, {5, 20}};
 	occupied_xy_positions previous_occupied_positions = initial_occupied_xy_positions;
-	
+
 	drop_speed initial_drop_speed = NORMAL;
 	block current_block = {current_block_type, RIGHT, DIRECTION_DOWN, initial_occupied_xy_positions, previous_occupied_positions, initial_drop_speed};
 
@@ -486,6 +485,11 @@ occupied_xy_positions get_new_positions(block current_block)
 		}
 
 		break;
+
+		case O_BLOCK:
+			// this block does not need rotating
+			new_positions = positions;
+			break;
 	}
 
 	return new_positions;
@@ -691,6 +695,10 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 			case L_BLOCK:
 			case L_BLOCK_FALLEN:
 				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, ORANGE);
+				break;			
+			case O_BLOCK:
+			case O_BLOCK_FALLEN:
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, YELLOW);
 				break;
 			}
 			// draw grid lines
@@ -766,7 +774,8 @@ int main(void)
 			current_block.direction = DIRECTION_DOWN;
 			current_block.drop_speed = FAST;
 		}
-		if (IsKeyPressed(KEY_SPACE)) {
+		if (IsKeyPressed(KEY_SPACE))
+		{
 			current_block.direction = DIRECTION_DOWN;
 			current_block.drop_speed = STRAIGHT_DOWN;
 		}
@@ -796,7 +805,7 @@ int main(void)
 		}
 		if (seconds_elapsed_for_move_down > move_down_seconds || current_block.drop_speed == FAST || current_block.drop_speed == STRAIGHT_DOWN)
 		{
-			seconds_elapsed_for_move_down = 0.0;			
+			seconds_elapsed_for_move_down = 0.0;
 
 			int hit_down = 0;
 
