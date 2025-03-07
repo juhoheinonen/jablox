@@ -23,7 +23,7 @@ tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	int randomIndex = getRandomInt(Z_BLOCK, Z_BLOCK);
+	int randomIndex = getRandomInt(T_BLOCK, T_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -521,6 +521,8 @@ occupied_xy_positions get_new_positions(block current_block)
 			new_positions.xy4.x = positions.xy4.x + 1;
 			new_positions.xy4.y = positions.xy4.y - 2;
 		}
+		break;
+	case T_BLOCK:
 		break;
 	case Z_BLOCK:
 		//return create_occupied_xy_positions(2, initial_y - 1, 3, initial_y - 1, 3, initial_y, 4, initial_y);
