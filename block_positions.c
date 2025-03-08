@@ -176,6 +176,61 @@ occupied_xy_positions get_new_positions(block current_block)
 			new_positions.xy4.y = positions.xy4.y - 1;
 		}
 		break;
+    case Y_BLOCK:        
+        if (current_block.rotation == RIGHT) {
+            new_positions.xy1.x = positions.xy1.x + 2;
+			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy2.x = positions.xy2.x + 1;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 1;
+			new_positions.xy4.y = positions.xy4.y + 1;
+            new_positions.xy5.x = positions.xy5.x;
+            new_positions.xy5.y = positions.xy5.y + 2;
+            new_positions.xy6.x = positions.xy6.x - 1;
+            new_positions.xy6.y = positions.xy6.y - 1;
+        } else if (current_block.rotation == DOWN) {
+            new_positions.xy1.x = positions.xy1.x;
+			new_positions.xy1.y = positions.xy1.y + 2;
+            new_positions.xy2.x = positions.xy2.x + 1;
+			new_positions.xy2.y = positions.xy2.y + 1;			
+			new_positions.xy3.x = positions.xy3.x;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x - 1;
+			new_positions.xy4.y = positions.xy4.y - 1;
+            new_positions.xy5.x = positions.xy5.x - 2;
+            new_positions.xy5.y = positions.xy5.y;
+            new_positions.xy6.x = positions.xy6.x + 1;
+            new_positions.xy6.y = positions.xy6.y - 1;
+        } else if (current_block.rotation == LEFT) {
+            new_positions.xy1.x = positions.xy1.x - 2;
+			new_positions.xy1.y = positions.xy1.y;
+			new_positions.xy2.x = positions.xy2.x - 1;
+			new_positions.xy2.y = positions.xy2.y + 1;
+			new_positions.xy3.x = positions.xy3.x;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x + 1;
+			new_positions.xy4.y = positions.xy4.y - 1;
+            new_positions.xy5.x = positions.xy5.x;
+            new_positions.xy5.y = positions.xy5.y - 2;
+            new_positions.xy6.x = positions.xy6.x + 1;
+            new_positions.xy6.y = positions.xy6.y + 1;
+        } else if (current_block.rotation == UP) {
+            new_positions.xy1.x = positions.xy1.x;
+			new_positions.xy1.y = positions.xy1.y - 2;
+			new_positions.xy2.x = positions.xy2.x - 1;
+			new_positions.xy2.y = positions.xy2.y - 1;
+			new_positions.xy3.x = positions.xy3.x;
+			new_positions.xy3.y = positions.xy3.y;
+			new_positions.xy4.x = positions.xy4.x + 1;
+			new_positions.xy4.y = positions.xy4.y + 1;
+            new_positions.xy5.x = positions.xy5.x + 2;
+            new_positions.xy5.y = positions.xy5.y;
+            new_positions.xy6.x = positions.xy6.x - 1;
+            new_positions.xy6.y = positions.xy6.y + 1;
+        }
+        break;
 	case Z_BLOCK:
 		if (current_block.rotation == RIGHT || current_block.rotation == LEFT)
 		{

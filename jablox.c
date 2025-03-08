@@ -94,13 +94,16 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 	{
 	case DIRECTION_LEFT:
 		// check if the block is not at the left wall
-		if (positions->xy1.x > 1 && positions->xy2.x > 1 && positions->xy3.x > 1 && positions->xy4.x > 1)
+		if (positions->xy1.x > 1 && positions->xy2.x > 1 && positions->xy3.x > 1 && positions->xy4.x > 1 &&
+			(positions->xy5.x == 0 || positions->xy5.x > 1) && (positions->xy6.x == 0 || positions->xy6.x > 1))
 		{
 			// check if the block is not colliding with another block and allowing moving if the block is moving over own pieces
-			if ((game_grid[positions->xy1.x - 1][positions->xy1.y].type == EMPTY || positions->xy1.x - 1 == positions->xy2.x || positions->xy1.x - 1 == positions->xy3.x || positions->xy1.x - 1 == positions->xy4.x) &&
-				(game_grid[positions->xy2.x - 1][positions->xy2.y].type == EMPTY || positions->xy2.x - 1 == positions->xy1.x || positions->xy2.x - 1 == positions->xy3.x || positions->xy2.x - 1 == positions->xy4.x) &&
-				(game_grid[positions->xy3.x - 1][positions->xy3.y].type == EMPTY || positions->xy3.x - 1 == positions->xy1.x || positions->xy3.x - 1 == positions->xy2.x || positions->xy3.x - 1 == positions->xy4.x) &&
-				(game_grid[positions->xy4.x - 1][positions->xy4.y].type == EMPTY || positions->xy4.x - 1 == positions->xy1.x || positions->xy4.x - 1 == positions->xy2.x || positions->xy4.x - 1 == positions->xy3.x))
+			if ((game_grid[positions->xy1.x - 1][positions->xy1.y].type == EMPTY || positions->xy1.x - 1 == positions->xy2.x || positions->xy1.x - 1 == positions->xy3.x || positions->xy1.x - 1 == positions->xy4.x || positions->xy1.x - 1 == positions->xy5.x || positions->xy1.x - 1 == positions->xy6.x) &&
+				(game_grid[positions->xy2.x - 1][positions->xy2.y].type == EMPTY || positions->xy2.x - 1 == positions->xy1.x || positions->xy2.x - 1 == positions->xy3.x || positions->xy2.x - 1 == positions->xy4.x || positions->xy2.x - 1 == positions->xy5.x || positions->xy2.x - 1 == positions->xy6.x) &&
+				(game_grid[positions->xy3.x - 1][positions->xy3.y].type == EMPTY || positions->xy3.x - 1 == positions->xy1.x || positions->xy3.x - 1 == positions->xy2.x || positions->xy3.x - 1 == positions->xy4.x || positions->xy3.x - 1 == positions->xy5.x || positions->xy3.x - 1 == positions->xy6.x) &&
+				(game_grid[positions->xy4.x - 1][positions->xy4.y].type == EMPTY || positions->xy4.x - 1 == positions->xy1.x || positions->xy4.x - 1 == positions->xy2.x || positions->xy4.x - 1 == positions->xy3.x || positions->xy4.x - 1 == positions->xy5.x || positions->xy4.x - 1 == positions->xy6.x) &&
+				(positions->xy5.x == 0 || game_grid[positions->xy5.x - 1][positions->xy5.y].type == EMPTY || positions->xy5.x - 1 == positions->xy1.x || positions->xy5.x - 1 == positions->xy2.x || positions->xy5.x - 1 == positions->xy3.x || positions->xy5.x - 1 == positions->xy4.x || positions->xy5.x - 1 == positions->xy6.x) &&
+				(positions->xy6.x == 0 || game_grid[positions->xy6.x - 1][positions->xy6.y].type == EMPTY || positions->xy6.x - 1 == positions->xy1.x || positions->xy6.x - 1 == positions->xy2.x || positions->xy6.x - 1 == positions->xy3.x || positions->xy6.x - 1 == positions->xy4.x || positions->xy6.x - 1 == positions->xy5.x))
 			{			
 				// store previous occupied xy positions
 				previous_positions->xy1.x = positions->xy1.x;
@@ -137,13 +140,16 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 
 	case DIRECTION_RIGHT:
 		// check if the block is not at the right wall
-		if (positions->xy1.x < 10 && positions->xy2.x < 10 && positions->xy3.x < 10 && positions->xy4.x < 10)
+		if (positions->xy1.x < 10 && positions->xy2.x < 10 && positions->xy3.x < 10 && positions->xy4.x < 10 &&
+			(positions->xy5.x == 0 || positions->xy5.x < 10) && (positions->xy6.x == 0 || positions->xy6.x < 10))
 		{
 			// check if the block is not colliding with another block
-			if ((game_grid[positions->xy1.x + 1][positions->xy1.y].type == EMPTY || positions->xy1.x + 1 == positions->xy2.x || positions->xy1.x + 1 == positions->xy3.x || positions->xy1.x + 1 == positions->xy4.x) &&
-				(game_grid[positions->xy2.x + 1][positions->xy2.y].type == EMPTY || positions->xy2.x + 1 == positions->xy1.x || positions->xy2.x + 1 == positions->xy3.x || positions->xy2.x + 1 == positions->xy4.x) &&
-				(game_grid[positions->xy3.x + 1][positions->xy3.y].type == EMPTY || positions->xy3.x + 1 == positions->xy1.x || positions->xy3.x + 1 == positions->xy2.x || positions->xy3.x + 1 == positions->xy4.x) &&
-				(game_grid[positions->xy4.x + 1][positions->xy4.y].type == EMPTY || positions->xy4.x + 1 == positions->xy1.x || positions->xy4.x + 1 == positions->xy2.x || positions->xy4.x + 1 == positions->xy3.x))
+			if ((game_grid[positions->xy1.x + 1][positions->xy1.y].type == EMPTY || positions->xy1.x + 1 == positions->xy2.x || positions->xy1.x + 1 == positions->xy3.x || positions->xy1.x + 1 == positions->xy4.x || positions->xy1.x + 1 == positions->xy5.x || positions->xy1.x + 1 == positions->xy6.x) &&
+				(game_grid[positions->xy2.x + 1][positions->xy2.y].type == EMPTY || positions->xy2.x + 1 == positions->xy1.x || positions->xy2.x + 1 == positions->xy3.x || positions->xy2.x + 1 == positions->xy4.x || positions->xy2.x + 1 == positions->xy5.x || positions->xy2.x + 1 == positions->xy6.x) &&
+				(game_grid[positions->xy3.x + 1][positions->xy3.y].type == EMPTY || positions->xy3.x + 1 == positions->xy1.x || positions->xy3.x + 1 == positions->xy2.x || positions->xy3.x + 1 == positions->xy4.x || positions->xy3.x + 1 == positions->xy5.x || positions->xy3.x + 1 == positions->xy6.x) &&
+				(game_grid[positions->xy4.x + 1][positions->xy4.y].type == EMPTY || positions->xy4.x + 1 == positions->xy1.x || positions->xy4.x + 1 == positions->xy2.x || positions->xy4.x + 1 == positions->xy3.x || positions->xy4.x + 1 == positions->xy5.x || positions->xy4.x + 1 == positions->xy6.x) &&
+				(positions->xy5.x == 0 || game_grid[positions->xy5.x + 1][positions->xy5.y].type == EMPTY || positions->xy5.x + 1 == positions->xy1.x || positions->xy5.x + 1 == positions->xy2.x || positions->xy5.x + 1 == positions->xy3.x || positions->xy5.x + 1 == positions->xy4.x || positions->xy5.x + 1 == positions->xy6.x) &&
+				(positions->xy6.x == 0 || game_grid[positions->xy6.x + 1][positions->xy6.y].type == EMPTY || positions->xy6.x + 1 == positions->xy1.x || positions->xy6.x + 1 == positions->xy2.x || positions->xy6.x + 1 == positions->xy3.x || positions->xy6.x + 1 == positions->xy4.x || positions->xy6.x + 1 == positions->xy5.x))
 			{
 				// store previous occupied xy positions
 				previous_positions->xy1.x = positions->xy1.x;
@@ -191,6 +197,11 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 		previous_positions->xy3.y = positions->xy3.y;
 		previous_positions->xy4.x = positions->xy4.x;
 		previous_positions->xy4.y = positions->xy4.y;
+		// xy5 and xy6 are only used in some blocks
+		previous_positions->xy5.x = positions->xy5.x;
+		previous_positions->xy5.y = positions->xy5.y;
+		previous_positions->xy6.x = positions->xy6.x;
+		previous_positions->xy6.y = positions->xy6.y;
 
 		xy_position position = {positions->xy1.x, positions->xy1.y};
 
@@ -293,7 +304,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				current_block->rotation = RIGHT;
 			}
 		}
-		else if (current_block->block_type == L_BLOCK || current_block->block_type == S_BLOCK || current_block->block_type == T_BLOCK || current_block->block_type == Z_BLOCK)
+		else if (current_block->block_type == L_BLOCK || current_block->block_type == S_BLOCK || current_block->block_type == T_BLOCK || current_block->block_type == Y_BLOCK || current_block->block_type == Z_BLOCK)
 		{
 			occupied_xy_positions new_positions = get_new_positions(*current_block);
 			positions->xy1.x = new_positions.xy1.x;
@@ -304,6 +315,16 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 			positions->xy3.y = new_positions.xy3.y;
 			positions->xy4.x = new_positions.xy4.x;
 			positions->xy4.y = new_positions.xy4.y;
+			if (new_positions.xy5.x != 0 && new_positions.xy5.y != 0)
+			{
+				positions->xy5.x = new_positions.xy5.x;
+				positions->xy5.y = new_positions.xy5.y;
+			}
+			if (new_positions.xy6.x != 0 && new_positions.xy6.y != 0)
+			{
+				positions->xy6.x = new_positions.xy6.x;
+				positions->xy6.y = new_positions.xy6.y;
+			}
 			if (current_block->rotation == RIGHT)
 			{
 				current_block->rotation = DOWN;
