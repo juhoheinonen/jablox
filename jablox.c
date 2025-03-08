@@ -452,6 +452,9 @@ void mark_block_as_landed(block *current_block)
 	case T_BLOCK:
 		current_block->block_type = T_BLOCK_FALLEN;
 		break;
+	case Y_BLOCK:
+		current_block->block_type = Y_BLOCK_FALLEN;
+		break;
 	case Z_BLOCK:
 		current_block->block_type = Z_BLOCK_FALLEN;
 		break;
@@ -593,10 +596,14 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 		new_positions.xy2.x > 0 && new_positions.xy2.x < game_grid_width_in_tiles - 1 &&
 		new_positions.xy3.x > 0 && new_positions.xy3.x < game_grid_width_in_tiles - 1 &&
 		new_positions.xy4.x > 0 && new_positions.xy4.x < game_grid_width_in_tiles - 1 &&
+		(new_positions.xy5.x == 0 || (new_positions.xy5.x > 0 && new_positions.xy5.x < game_grid_width_in_tiles - 1)) &&
+		(new_positions.xy6.x == 0 || (new_positions.xy6.x > 0 && new_positions.xy6.x < game_grid_width_in_tiles - 1)) &&
 		(game_grid[new_positions.xy1.x][new_positions.xy1.y].type == EMPTY || game_grid[new_positions.xy1.x][new_positions.xy1.y].type == current_block.block_type) &&
 		(game_grid[new_positions.xy2.x][new_positions.xy2.y].type == EMPTY || game_grid[new_positions.xy2.x][new_positions.xy2.y].type == current_block.block_type) &&
 		(game_grid[new_positions.xy3.x][new_positions.xy3.y].type == EMPTY || game_grid[new_positions.xy3.x][new_positions.xy3.y].type == current_block.block_type) &&
-		(game_grid[new_positions.xy4.x][new_positions.xy4.y].type == EMPTY || game_grid[new_positions.xy4.x][new_positions.xy4.y].type == current_block.block_type))
+		(game_grid[new_positions.xy4.x][new_positions.xy4.y].type == EMPTY || game_grid[new_positions.xy4.x][new_positions.xy4.y].type == current_block.block_type) &&
+		(new_positions.xy5.x == 0 || game_grid[new_positions.xy5.x][new_positions.xy5.y].type == EMPTY || game_grid[new_positions.xy5.x][new_positions.xy5.y].type == current_block.block_type) &&
+		(new_positions.xy6.x == 0 || game_grid[new_positions.xy6.x][new_positions.xy6.y].type == EMPTY || game_grid[new_positions.xy6.x][new_positions.xy6.y].type == current_block.block_type))
 	{
 		return 1;
 	}
