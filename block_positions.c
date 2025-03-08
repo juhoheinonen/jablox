@@ -37,7 +37,7 @@ occupied_xy_positions get_initial_xy_positions_by_block_type(tile_block_type blo
         return create_occupied_xy_positions((xy_position){2, initial_y}, (xy_position){3, initial_y}, (xy_position){4, initial_y}, (xy_position){3, initial_y - 1}, (xy_position){0, 0}, (xy_position){0, 0});
         break;
     case Y_BLOCK:
-        return create_occupied_xy_positions((xy_position){2, initial_y - 1}, (xy_position){2, initial_y}, (xy_position){3, initial_y}, (xy_position){4, initial_y}, (xy_position){5, initial_y - 1}, (xy_position){3, initial_y + 1});
+        return create_occupied_xy_positions((xy_position){2, initial_y - 1}, (xy_position){2, initial_y}, (xy_position){3, initial_y}, (xy_position){4, initial_y}, (xy_position){4, initial_y - 1}, (xy_position){3, initial_y + 1});
         break;
     case Z_BLOCK:
         return create_occupied_xy_positions((xy_position){2, initial_y - 1}, (xy_position){3, initial_y - 1}, (xy_position){3, initial_y}, (xy_position){4, initial_y}, (xy_position){0, 0}, (xy_position){0, 0});

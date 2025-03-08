@@ -24,7 +24,7 @@ tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
+	int randomIndex = getRandomInt(Y_BLOCK, Y_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -61,11 +61,27 @@ void update_game_grid(game_tile game_grid[][40], block current_block)
 	game_grid[current_block.previous_occupied_xy_positions.xy2.x][current_block.previous_occupied_xy_positions.xy2.y].type = EMPTY;
 	game_grid[current_block.previous_occupied_xy_positions.xy3.x][current_block.previous_occupied_xy_positions.xy3.y].type = EMPTY;
 	game_grid[current_block.previous_occupied_xy_positions.xy4.x][current_block.previous_occupied_xy_positions.xy4.y].type = EMPTY;
+	if (current_block.previous_occupied_xy_positions.xy5.x != 0 && current_block.previous_occupied_xy_positions.xy5.y != 0)
+	{
+		game_grid[current_block.previous_occupied_xy_positions.xy5.x][current_block.previous_occupied_xy_positions.xy5.y].type = EMPTY;
+	}
+	if (current_block.previous_occupied_xy_positions.xy6.x != 0 && current_block.previous_occupied_xy_positions.xy6.y != 0)
+	{
+		game_grid[current_block.previous_occupied_xy_positions.xy6.x][current_block.previous_occupied_xy_positions.xy6.y].type = EMPTY;
+	}
 
 	game_grid[current_block.occupied_xy_positions.xy1.x][current_block.occupied_xy_positions.xy1.y].type = current_block.block_type;
 	game_grid[current_block.occupied_xy_positions.xy2.x][current_block.occupied_xy_positions.xy2.y].type = current_block.block_type;
 	game_grid[current_block.occupied_xy_positions.xy3.x][current_block.occupied_xy_positions.xy3.y].type = current_block.block_type;
 	game_grid[current_block.occupied_xy_positions.xy4.x][current_block.occupied_xy_positions.xy4.y].type = current_block.block_type;
+	if (current_block.occupied_xy_positions.xy5.x != 0 && current_block.occupied_xy_positions.xy5.y != 0)
+	{
+		game_grid[current_block.occupied_xy_positions.xy5.x][current_block.occupied_xy_positions.xy5.y].type = current_block.block_type;
+	}
+	if (current_block.occupied_xy_positions.xy6.x != 0 && current_block.occupied_xy_positions.xy6.y != 0)
+	{
+		game_grid[current_block.occupied_xy_positions.xy6.x][current_block.occupied_xy_positions.xy6.y].type = current_block.block_type;
+	}		
 }
 
 void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_block)
@@ -85,7 +101,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				(game_grid[positions->xy2.x - 1][positions->xy2.y].type == EMPTY || positions->xy2.x - 1 == positions->xy1.x || positions->xy2.x - 1 == positions->xy3.x || positions->xy2.x - 1 == positions->xy4.x) &&
 				(game_grid[positions->xy3.x - 1][positions->xy3.y].type == EMPTY || positions->xy3.x - 1 == positions->xy1.x || positions->xy3.x - 1 == positions->xy2.x || positions->xy3.x - 1 == positions->xy4.x) &&
 				(game_grid[positions->xy4.x - 1][positions->xy4.y].type == EMPTY || positions->xy4.x - 1 == positions->xy1.x || positions->xy4.x - 1 == positions->xy2.x || positions->xy4.x - 1 == positions->xy3.x))
-			{
+			{			
 				// store previous occupied xy positions
 				previous_positions->xy1.x = positions->xy1.x;
 				previous_positions->xy1.y = positions->xy1.y;
@@ -95,14 +111,26 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy3.y = positions->xy3.y;
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
-
-				// current_block->current_xy_position.x--;
+				// xy5 and xy6 are only used in some blocks
+				previous_positions->xy5.x = positions->xy5.x;
+				previous_positions->xy5.y = positions->xy5.y;
+				previous_positions->xy6.x = positions->xy6.x;
+				previous_positions->xy6.y = positions->xy6.y;				
 
 				// move all occupied xy positions
 				positions->xy1.x--;
 				positions->xy2.x--;
 				positions->xy3.x--;
 				positions->xy4.x--;
+				// only for some blocks
+				if (positions->xy5.x != 0 && positions->xy5.y != 0)
+				{
+					positions->xy5.x--;
+				}
+				if (positions->xy6.x != 0 && positions->xy6.y != 0)
+				{
+					positions->xy6.x--;
+				}
 			}
 		}
 		break;
@@ -126,14 +154,26 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy3.y = positions->xy3.y;
 				previous_positions->xy4.x = positions->xy4.x;
 				previous_positions->xy4.y = positions->xy4.y;
-
-				// current_block->current_xy_position.x++;
+				// xy5 and xy6 are only used in some blocks
+				previous_positions->xy5.x = positions->xy5.x;
+				previous_positions->xy5.y = positions->xy5.y;
+				previous_positions->xy6.x = positions->xy6.x;
+				previous_positions->xy6.y = positions->xy6.y;				
 
 				// move all occupied xy positions
 				positions->xy1.x++;
 				positions->xy2.x++;
 				positions->xy3.x++;
 				positions->xy4.x++;
+				// only for some blocks
+				if (positions->xy5.x != 0 && positions->xy5.y != 0)
+				{
+					positions->xy5.x++;
+				}
+				if (positions->xy6.x != 0 && positions->xy6.y != 0)
+				{
+					positions->xy6.x++;
+				}
 			}
 		}
 		break;
@@ -293,13 +333,16 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 	occupied_xy_positions *previous_positions = &current_block->previous_occupied_xy_positions;
 
 	// check if the block is not at the bottom wall
-	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39)
+	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39 &&
+		(positions->xy5.x == 0 || positions->xy5.y < 39) && (positions->xy6.x == 0 || positions->xy6.y < 39))
 	{
 		// check if the block is not colliding with another block
-		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y) &&
-			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y) &&
-			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y) &&
-			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y))
+		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y || positions->xy1.y + 1 == positions->xy5.y || positions->xy1.y + 1 == positions->xy6.y) &&
+			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y || positions->xy2.y + 1 == positions->xy5.y || positions->xy2.y + 1 == positions->xy6.y) &&
+			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y || positions->xy3.y + 1 == positions->xy5.y || positions->xy3.y + 1 == positions->xy6.y) &&
+			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y || positions->xy4.y + 1 == positions->xy5.y || positions->xy4.y + 1 == positions->xy6.y) &&
+			(positions->xy5.x == 0 || game_grid[positions->xy5.x][positions->xy5.y + 1].type == EMPTY || positions->xy5.y + 1 == positions->xy1.y || positions->xy5.y + 1 == positions->xy2.y || positions->xy5.y + 1 == positions->xy3.y || positions->xy5.y + 1 == positions->xy4.y || positions->xy5.y + 1 == positions->xy6.y) &&
+			(positions->xy6.x == 0 || game_grid[positions->xy6.x][positions->xy6.y + 1].type == EMPTY || positions->xy6.y + 1 == positions->xy1.y || positions->xy6.y + 1 == positions->xy2.y || positions->xy6.y + 1 == positions->xy3.y || positions->xy6.y + 1 == positions->xy4.y || positions->xy6.y + 1 == positions->xy5.y))
 		{
 			// store previous occupied xy positions
 			previous_positions->xy1.x = positions->xy1.x;
@@ -310,14 +353,26 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			previous_positions->xy3.y = positions->xy3.y;
 			previous_positions->xy4.x = positions->xy4.x;
 			previous_positions->xy4.y = positions->xy4.y;
-
-			// current_block->current_xy_position.y++;
-
+			// xy5 and xy6 are only used in some blocks
+			previous_positions->xy5.x = positions->xy5.x;
+			previous_positions->xy5.y = positions->xy5.y;
+			previous_positions->xy6.x = positions->xy6.x;
+			previous_positions->xy6.y = positions->xy6.y;
+			
 			// move all occupied xy positions
 			positions->xy1.y++;
 			positions->xy2.y++;
 			positions->xy3.y++;
 			positions->xy4.y++;
+			// only for some blocks
+			if (positions->xy5.x != 0 && positions->xy5.y != 0)
+			{
+				positions->xy5.y++;
+			}
+			if (positions->xy6.x != 0 && positions->xy6.y != 0)
+			{
+				positions->xy6.y++;
+			}
 		}
 	}
 
@@ -328,15 +383,18 @@ int check_hit_down(game_tile game_grid[][40], block current_block)
 {
 	// get all occupied xy positions
 	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
-
+	
 	// check if the block is not at the bottom wall
-	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39)
+	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39 &&
+		(positions->xy5.x == 0 || positions->xy5.y < 39) && (positions->xy6.x == 0 || positions->xy6.y < 39))
 	{
 		// check if the block is not colliding with another block
-		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y) &&
-			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y) &&
-			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y) &&
-			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y))
+		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y || positions->xy1.y + 1 == positions->xy5.y || positions->xy1.y + 1 == positions->xy6.y) &&
+			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y || positions->xy2.y + 1 == positions->xy5.y || positions->xy2.y + 1 == positions->xy6.y) &&
+			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y || positions->xy3.y + 1 == positions->xy5.y || positions->xy3.y + 1 == positions->xy6.y) &&
+			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y || positions->xy4.y + 1 == positions->xy5.y || positions->xy4.y + 1 == positions->xy6.y) &&
+			(positions->xy5.x == 0 || game_grid[positions->xy5.x][positions->xy5.y + 1].type == EMPTY || positions->xy5.y + 1 == positions->xy1.y || positions->xy5.y + 1 == positions->xy2.y || positions->xy5.y + 1 == positions->xy3.y || positions->xy5.y + 1 == positions->xy4.y || positions->xy5.y + 1 == positions->xy6.y) &&
+			(positions->xy6.x == 0 || game_grid[positions->xy6.x][positions->xy6.y + 1].type == EMPTY || positions->xy6.y + 1 == positions->xy1.y || positions->xy6.y + 1 == positions->xy2.y || positions->xy6.y + 1 == positions->xy3.y || positions->xy6.y + 1 == positions->xy4.y || positions->xy6.y + 1 == positions->xy5.y))
 		{
 			return 0;
 		}
@@ -501,6 +559,7 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 	case O_BLOCK:
 	case S_BLOCK:
 	case T_BLOCK:
+	case Y_BLOCK:
 	case Z_BLOCK:
 		new_positions = get_new_positions(current_block);
 		break;
@@ -614,7 +673,8 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 				break;
 			case Y_BLOCK:
 			case Y_BLOCK_FALLEN:
-				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){255, 0, 127});
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, PINK);
+				//DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){255, 0, 127});
 				break;
 			case Z_BLOCK:
 			case Z_BLOCK_FALLEN:
