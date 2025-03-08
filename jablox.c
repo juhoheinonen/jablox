@@ -23,7 +23,7 @@ tile_block_type getRandomBlockType()
 {
 	// int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	//  start with only giving some of the blocks
-	int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
+	int randomIndex = getRandomInt(Y_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 

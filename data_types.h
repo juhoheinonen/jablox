@@ -13,6 +13,7 @@ typedef enum
     O_BLOCK,
     S_BLOCK,
     T_BLOCK,
+    Y_BLOCK,
     Z_BLOCK,
     I_BLOCK_FALLEN,
     J_BLOCK_FALLEN,
@@ -20,6 +21,7 @@ typedef enum
     O_BLOCK_FALLEN,
     S_BLOCK_FALLEN,
     T_BLOCK_FALLEN,
+    Y_BLOCK_FALLEN,
     Z_BLOCK_FALLEN        
 } tile_block_type;
 
@@ -36,6 +38,8 @@ typedef struct
     xy_position xy2;
     xy_position xy3;
     xy_position xy4;
+    xy_position xy5; // only used in some blocks
+    xy_position xy6; // only used in some blocks
 } occupied_xy_positions;
 
 typedef struct
