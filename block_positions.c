@@ -51,6 +51,9 @@ occupied_xy_positions get_new_positions(block current_block)
 	occupied_xy_positions positions = current_block.occupied_xy_positions;
 
 	occupied_xy_positions new_positions;
+    new_positions.xy5 = (xy_position){0, 0};
+    new_positions.xy6 = (xy_position){0, 0};
+
 	switch (current_block.block_type)
 	{
 	case L_BLOCK:

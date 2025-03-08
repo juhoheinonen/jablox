@@ -21,7 +21,7 @@ int getRandomInt(int min, int max)
 }
 
 tile_block_type getRandomBlockType()
-{	
+{
 	int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	return (tile_block_type)randomIndex;
 }
@@ -79,7 +79,7 @@ void update_game_grid(game_tile game_grid[][40], block current_block)
 	if (current_block.occupied_xy_positions.xy6.x != 0 && current_block.occupied_xy_positions.xy6.y != 0)
 	{
 		game_grid[current_block.occupied_xy_positions.xy6.x][current_block.occupied_xy_positions.xy6.y].type = current_block.block_type;
-	}		
+	}
 }
 
 void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_block)
@@ -102,7 +102,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				(game_grid[positions->xy4.x - 1][positions->xy4.y].type == EMPTY || positions->xy4.x - 1 == positions->xy1.x || positions->xy4.x - 1 == positions->xy2.x || positions->xy4.x - 1 == positions->xy3.x || positions->xy4.x - 1 == positions->xy5.x || positions->xy4.x - 1 == positions->xy6.x) &&
 				(positions->xy5.x == 0 || game_grid[positions->xy5.x - 1][positions->xy5.y].type == EMPTY || positions->xy5.x - 1 == positions->xy1.x || positions->xy5.x - 1 == positions->xy2.x || positions->xy5.x - 1 == positions->xy3.x || positions->xy5.x - 1 == positions->xy4.x || positions->xy5.x - 1 == positions->xy6.x) &&
 				(positions->xy6.x == 0 || game_grid[positions->xy6.x - 1][positions->xy6.y].type == EMPTY || positions->xy6.x - 1 == positions->xy1.x || positions->xy6.x - 1 == positions->xy2.x || positions->xy6.x - 1 == positions->xy3.x || positions->xy6.x - 1 == positions->xy4.x || positions->xy6.x - 1 == positions->xy5.x))
-			{			
+			{
 				// store previous occupied xy positions
 				previous_positions->xy1.x = positions->xy1.x;
 				previous_positions->xy1.y = positions->xy1.y;
@@ -116,7 +116,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy5.x = positions->xy5.x;
 				previous_positions->xy5.y = positions->xy5.y;
 				previous_positions->xy6.x = positions->xy6.x;
-				previous_positions->xy6.y = positions->xy6.y;				
+				previous_positions->xy6.y = positions->xy6.y;
 
 				// move all occupied xy positions
 				positions->xy1.x--;
@@ -162,7 +162,7 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 				previous_positions->xy5.x = positions->xy5.x;
 				previous_positions->xy5.y = positions->xy5.y;
 				previous_positions->xy6.x = positions->xy6.x;
-				previous_positions->xy6.y = positions->xy6.y;				
+				previous_positions->xy6.y = positions->xy6.y;
 
 				// move all occupied xy positions
 				positions->xy1.x++;
@@ -377,7 +377,7 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			previous_positions->xy5.y = positions->xy5.y;
 			previous_positions->xy6.x = positions->xy6.x;
 			previous_positions->xy6.y = positions->xy6.y;
-			
+
 			// move all occupied xy positions
 			positions->xy1.y++;
 			positions->xy2.y++;
@@ -402,7 +402,7 @@ int check_hit_down(game_tile game_grid[][40], block current_block)
 {
 	// get all occupied xy positions
 	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
-	
+
 	// check if the block is not at the bottom wall
 	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39 &&
 		(positions->xy5.x == 0 || positions->xy5.y < 39) && (positions->xy6.x == 0 || positions->xy6.y < 39))
@@ -477,6 +477,11 @@ int can_rotate(game_tile game_grid[][40], block current_block)
 {
 	occupied_xy_positions *positions = &current_block.occupied_xy_positions;
 	occupied_xy_positions new_positions;
+	// xy5 and xy6 to 0 initially
+	new_positions.xy5.x = 0;
+	new_positions.xy5.y = 0;
+	new_positions.xy6.x = 0;
+	new_positions.xy6.y = 0;
 	rotation current_rotation = current_block.rotation;
 
 	switch (current_block.block_type)
@@ -687,7 +692,7 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 				break;
 			case O_BLOCK:
 			case O_BLOCK_FALLEN:
-				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, YELLOW);
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){226, 209, 100, 255});
 				break;
 			case S_BLOCK:
 			case S_BLOCK_FALLEN:
@@ -699,8 +704,7 @@ void draw_grid(const int game_grid_width_in_tiles, const int game_grid_height_in
 				break;
 			case Y_BLOCK:
 			case Y_BLOCK_FALLEN:
-				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, PINK);
-				//DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, (Color){255, 0, 127});
+				DrawRectangle(horizontal_offset + x * tile_width, vertical_offset + y * tile_height, tile_width, tile_height, PINK); //CLITERAL(Color){200, 77, 80, 255});
 				break;
 			case Z_BLOCK:
 			case Z_BLOCK_FALLEN:
