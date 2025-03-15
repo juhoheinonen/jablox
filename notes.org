@@ -1,4 +1,4 @@
-* Process:
+* Process, possible ideas?
 
-** TODO blocks after J_BLOCK
-** TODO game over check
+** TODO next block?
+** TODO nicer horizontal move
