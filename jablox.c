@@ -345,8 +345,11 @@ void move_block_horizontal_or_rotate(game_tile game_grid[][40], block *current_b
 	current_block->direction = DIRECTION_DOWN;
 }
 
-void move_block_down(game_tile game_grid[][40], block *current_block)
+// return 1 if the move could be performed, otherwise 0
+int move_block_down(game_tile game_grid[][40], block *current_block)
 {
+	int move_performed = 0;
+
 	// get all occupied xy positions
 	occupied_xy_positions *positions = &current_block->occupied_xy_positions;
 	occupied_xy_positions *previous_positions = &current_block->previous_occupied_xy_positions;
@@ -392,10 +395,14 @@ void move_block_down(game_tile game_grid[][40], block *current_block)
 			{
 				positions->xy6.y++;
 			}
+
+			move_performed = 1;
 		}
 	}
 
 	current_block->direction = DIRECTION_DOWN;
+
+	return move_performed;
 }
 
 int check_hit_down(game_tile game_grid[][40], block current_block)
@@ -812,6 +819,8 @@ int main(void)
 				update_game_grid(game_grid, current_block);
 			}
 		}
+
+		// handle move down
 		if (seconds_elapsed_for_move_down > move_down_seconds || current_block.drop_speed == FAST || current_block.drop_speed == STRAIGHT_DOWN)
 		{
 			seconds_elapsed_for_move_down = 0.0;
@@ -840,11 +849,13 @@ int main(void)
 			}
 			else
 			{
-				move_block_down(game_grid, &current_block);
+				int move_performed = move_block_down(game_grid, &current_block);
 
-				hit_down = check_hit_down(game_grid, current_block);
-				if (hit_down)
-				{
+				if (move_performed) {
+					current_block.drop_speed = NORMAL;
+					update_game_grid(game_grid, current_block);
+				} else {
+					hit_down = 1;
 					mark_block_as_landed(&current_block);
 					update_game_grid(game_grid, current_block);
 					current_block = initialize_new_block();
@@ -854,11 +865,23 @@ int main(void)
 						continue;
 					};
 				}
-				else
-				{
-					current_block.drop_speed = NORMAL;
-					update_game_grid(game_grid, current_block);
-				}
+				// hit_down = check_hit_down(game_grid, current_block);
+				// if (hit_down)
+				// {
+				// 	mark_block_as_landed(&current_block);
+				// 	update_game_grid(game_grid, current_block);
+				// 	current_block = initialize_new_block();
+				// 	if (check_hit_down(game_grid, current_block))
+				// 	{
+				// 		status = GAME_OVER;
+				// 		continue;
+				// 	};
+				// }
+				// else
+				// {
+				// 	current_block.drop_speed = NORMAL;
+				// 	update_game_grid(game_grid, current_block);
+				// }
 			}
 
 			if (hit_down)
