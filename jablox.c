@@ -22,7 +22,7 @@ int getRandomInt(int min, int max)
 
 tile_block_type getRandomBlockType()
 {
-	int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
+	int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
@@ -358,13 +358,15 @@ int move_block_down(game_tile game_grid[][40], block *current_block)
 	if (positions->xy1.y < 39 && positions->xy2.y < 39 && positions->xy3.y < 39 && positions->xy4.y < 39 &&
 		(positions->xy5.x == 0 || positions->xy5.y < 39) && (positions->xy6.x == 0 || positions->xy6.y < 39))
 	{
+		tile_block_type block_type = current_block->block_type;
+
 		// check if the block is not colliding with another block
-		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || positions->xy1.y + 1 == positions->xy2.y || positions->xy1.y + 1 == positions->xy3.y || positions->xy1.y + 1 == positions->xy4.y || positions->xy1.y + 1 == positions->xy5.y || positions->xy1.y + 1 == positions->xy6.y) &&
-			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || positions->xy2.y + 1 == positions->xy1.y || positions->xy2.y + 1 == positions->xy3.y || positions->xy2.y + 1 == positions->xy4.y || positions->xy2.y + 1 == positions->xy5.y || positions->xy2.y + 1 == positions->xy6.y) &&
-			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || positions->xy3.y + 1 == positions->xy1.y || positions->xy3.y + 1 == positions->xy2.y || positions->xy3.y + 1 == positions->xy4.y || positions->xy3.y + 1 == positions->xy5.y || positions->xy3.y + 1 == positions->xy6.y) &&
-			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || positions->xy4.y + 1 == positions->xy1.y || positions->xy4.y + 1 == positions->xy2.y || positions->xy4.y + 1 == positions->xy3.y || positions->xy4.y + 1 == positions->xy5.y || positions->xy4.y + 1 == positions->xy6.y) &&
-			(positions->xy5.x == 0 || game_grid[positions->xy5.x][positions->xy5.y + 1].type == EMPTY || positions->xy5.y + 1 == positions->xy1.y || positions->xy5.y + 1 == positions->xy2.y || positions->xy5.y + 1 == positions->xy3.y || positions->xy5.y + 1 == positions->xy4.y || positions->xy5.y + 1 == positions->xy6.y) &&
-			(positions->xy6.x == 0 || game_grid[positions->xy6.x][positions->xy6.y + 1].type == EMPTY || positions->xy6.y + 1 == positions->xy1.y || positions->xy6.y + 1 == positions->xy2.y || positions->xy6.y + 1 == positions->xy3.y || positions->xy6.y + 1 == positions->xy4.y || positions->xy6.y + 1 == positions->xy5.y))
+		if ((game_grid[positions->xy1.x][positions->xy1.y + 1].type == EMPTY || game_grid[positions->xy1.x][positions->xy1.y + 1].type == block_type) &&
+			(game_grid[positions->xy2.x][positions->xy2.y + 1].type == EMPTY || game_grid[positions->xy2.x][positions->xy2.y + 1].type == block_type) &&
+			(game_grid[positions->xy3.x][positions->xy3.y + 1].type == EMPTY || game_grid[positions->xy3.x][positions->xy3.y + 1].type == block_type) &&
+			(game_grid[positions->xy4.x][positions->xy4.y + 1].type == EMPTY || game_grid[positions->xy4.x][positions->xy4.y + 1].type == block_type) &&
+			(positions->xy5.x == 0 || game_grid[positions->xy5.x][positions->xy5.y + 1].type == EMPTY || game_grid[positions->xy5.x][positions->xy5.y + 1].type == block_type) &&
+			(positions->xy6.x == 0 || game_grid[positions->xy6.x][positions->xy6.y + 1].type == EMPTY || game_grid[positions->xy6.x][positions->xy6.y + 1].type == block_type))
 		{
 			// store previous occupied xy positions
 			previous_positions->xy1.x = positions->xy1.x;
@@ -831,8 +833,8 @@ int main(void)
 			{
 				while (hit_down == 0)
 				{
-					move_block_down(game_grid, &current_block);
-					hit_down = check_hit_down(game_grid, current_block);
+					int move_performed = move_block_down(game_grid, &current_block);					
+					hit_down = move_performed == 0; // || check_hit_down(game_grid, current_block);
 					if (hit_down)
 					{
 						mark_block_as_landed(&current_block);
