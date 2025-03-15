@@ -22,7 +22,7 @@ int getRandomInt(int min, int max)
 
 tile_block_type getRandomBlockType()
 {
-	int randomIndex = getRandomInt(I_BLOCK, J_BLOCK);
+	int randomIndex = getRandomInt(I_BLOCK, Z_BLOCK);
 	return (tile_block_type)randomIndex;
 }
 
