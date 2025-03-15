@@ -13,7 +13,7 @@ const double move_down_seconds = 0.3;
 const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
 const int game_grid_height_in_tiles = 40;
 int game_score = 0;
-const int level_1_score_goal = 10;
+const int level_1_score_goal = 50;
 
 int getRandomInt(int min, int max)
 {
