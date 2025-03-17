@@ -8,7 +8,7 @@ void birthday_present()
     char *message = "Happy Birthday to dear 43-year old!!!\n"
                     "As a birthday present, I will provide you the following services:\n"
                     "- 3 times I will prepare the food you want\n"
-                    "- 1 time I will go to you with a restaurant you want to go to";
+                    "- 1 time I will go to you with a restaurant you want to go to";                    
 
                     // Define the file path
                     const char *file_path = "/home/juhohe/Desktop/miias_gift.txt";
