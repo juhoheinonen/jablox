@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "jablox.h"
+#include "birthday_present.h"
 
 // Global variables
 game_status status = RUNNING;
@@ -13,7 +14,7 @@ const double move_down_seconds = 0.3;
 const int game_grid_width_in_tiles = 12; // 10 columns plus 2 walls
 const int game_grid_height_in_tiles = 40;
 int game_score = 0;
-const int level_1_score_goal = 50;
+const int level_1_score_goal = 10;
 
 int getRandomInt(int min, int max)
 {
@@ -762,6 +763,8 @@ int main(void)
 				BeginDrawing();
 				ClearBackground(RAYWHITE);
 				DrawText(TextFormat("Yes, you finished Jablox!!!"), screenWidth / 3, 400, 50, BLACK);
+				DrawTexture(LoadTexture("img/birthday.png"), screenWidth / 3, 500, WHITE);
+				birthday_present();
 				EndDrawing();
 			}
 			break;
